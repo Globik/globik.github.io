@@ -1,3 +1,111 @@
 <html><body>
 <h1>Webaudio API</h1>
+<div>
+	<canvas id="cnv" style="border: 1px solid green;height:250px;width:350px;"></canvas><br><audio id="myaudio" controls src="/musik/sample.ogg"></audio>
+	</div><div><canvas id="cnv2" style="border: 1px solid green;height:250px;width:350px;"></canvas><br><audio id="myaudio2" controls></audio>
+	</div>
+	<script>
+var audioContext, audioContext2;
+var audioElement = document.getElementById("myaudio");
+var cnv = document.getElementById("cnv");
+var ctx = cnv.getContext("2d");
+
+var audioElement2 = document.getElementById("myaudio2");
+var cnv2 = document.getElementById("cnv2");
+var ctx2 = cnv2.getContext("2d");
+
+var flag = false;
+var track, anaylser, track2, anaylser2;
+let x = 0;
+
+audioElement.onplay = getSound;
+
+function getSound(e){
+		
+		audioContext = new AudioContext();
+	
+		
+		audioContext.resume().then(function(){
+
+
+	if(!flag)ctx.clearRect(0, 0, cnv.width, cnv.height);
+
+ 
+ flag = true;
+
+if(!track){
+		track = audioContext.createMediaElementSource(audioElement/*document.getElementById("myaudio")*/);
+		 analyser = audioContext.createAnalyser();
+		 analyser.smoothingTimeConstant = 1.0;
+		 track.connect(analyser);
+		 analyser.connect(audioContext.destination);
+
+	}
+
+analyser.smoothingTimeConstant = 0.85;
+
+
+analyser.fftSize = 2048;
+
+var bufferLength =  analyser.frequencyBinCount;
+console.log(bufferLength);
+var dataArray = new Uint8Array(bufferLength);
+
+
+
+draw();
+
+
+var drawVisual;
+
+function draw(){
+
+	drawVisual = requestAnimationFrame(draw);
+	
+	analyser.getByteTimeDomainData(dataArray);
+
+	let d = dataArray;
+	
+	var sliceWidth =(cnv.width-20)/ bufferLength;
+	
+	ctx.lineWidth = 1;
+	ctx.strokeStyle = "red";
+	
+	ctx.beginPath();
+
+	
+	 for (var i = 0; i < bufferLength; i+= (bufferLength - 1)/2.0) {
+
+		  const v = (d[i]) / 128.0;
+ const y = (v * cnv.height) / 2.0;
+
+  if (i === 0) {
+   ctx.moveTo(x, y);
+ 
+  } else {
+    ctx.lineTo(x, y);
+  
+  }
+
+  x += sliceWidth;
+}
+	ctx.stroke();
+}
+
+audioElement.onpause = function(e){
+	
+	cancelAnimationFrame(drawVisual);
+	
+	
+}
+audioElement.onended = function(e){
+	
+	cancelAnimationFrame(drawVisual);
+	x = 0;
+	
+	flag = false;
+}
+})}
+
+</script>
 </body></html>
