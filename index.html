@@ -8,7 +8,7 @@
 	<body></body>
 	<div><button  onclick="getBuf(this);" id="first" data-f="2" disabled>Предыдущая</button> &nbsp;&nbsp;&nbsp;<button data-f="0" id="zweit" onclick="getBuf(this);">Следующия</button></div>
 	<div>
-	<canvas id="cnv" style="border: 1px solid green;height:100px;width:400px;"></canvas><br><audio id="myaudio" src="/musik/test.wav"></audio>
+	<canvas id="cnv" style="border: 1px solid green;height:100px;width:400px;"></canvas><br><audio id="myaudio" src="/musik/0001rus.wav"></audio>
 	</div>
 		<div>
 	<audio id="gum" atoplay unmutd></audio>
@@ -263,7 +263,7 @@ const errorMsgElement = document.querySelector('span#errorMsg');
 const recordedVideo = gum;
 const recordButton = document.querySelector('button#record');
 recordButton.addEventListener('click', () => {
-  if (recordButton.textContent === 'Start Recording') {
+  if (recordButton.textContent === 'Запись') {
     startRecording();
   } else {
     stopRecording();
@@ -333,7 +333,7 @@ function startRecording() {
   }
 
   console.log('Created MediaRecorder', mediaRecorder, 'with options', options);
-  recordButton.textContent = 'Stop Recording';
+  recordButton.textContent = 'Стоп';
   playButton.disabled = true;
   downloadButton.disabled = true;
  
