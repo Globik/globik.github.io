@@ -6,7 +6,7 @@
 	</style>
 	</head>
 	<body></body>
-	<div><button  onclick="getBuf(this);" id="first" data-f="2" disabled>Предыдущая</button> &nbsp;&nbsp;&nbsp;<button data-f="0" id="zweit" onclick="getBuf(this);">Следующия</button></div>
+	<div><button  onclick="getBuf(this);" id="first" data-f="-1" disabled>Предыдущая</button> &nbsp;&nbsp;&nbsp;<button data-f="0" id="zweit" onclick="getBuf(this);">Следующия</button></div>
 	<div>
 	<canvas id="cnv" style="border: 1px solid green;height:100px;width:400px;"></canvas><br><audio id="myaudio" src="/musik/0001rus.wav"></audio>
 	</div>
@@ -37,34 +37,55 @@ var track,analyser;
 let x = 0;
 let files = ["/musik/0001rus.wav", "/musik/0002rus.wav", "/musik/0003rus.wav", "/musik/0004rus.wav"];
 
-var k = 0;var si = files.length;
+var si = files.length;
+
+
+function disabled(n){
+	if(n < si){
+		zweit.disabled = false;
+	}
+	if(n > 0){
+		first.disabled = false;
+	}
+	if(n == 0){
+		first.disabled = true;
+	}
+	if(n == si - 1){
+
+		zweit.disabled = true;
+	
+	}
+}
+
 async function getBuf(e){
+	let n = Number(e.getAttribute("data-f"));
+	
+	if(n < 0){
+		
+		return;
+	}
+	disabled(n);
+	if(n == si){
+	
+		return;
+	}
+
 	e.disabled = true;
 ctx3 = new AudioContext();
 
 var audio3;
 
 let data;
-if(k < files.length){
-data = await fetch(files[k]);
 
-e.setAttribute('data-f', k)
-k++;
-if(k == files.length){
-	first.disabled = false;
-	zweit.disabled = true;
-	si = 4;
+
+try{
+data = await fetch(files[n]);
+}catch(e){
+	alert(e);
+	return;
 }
-}else{
-data = await fetch(files[si-1]);
-e.setAttribute('data-f', si)
-si--;
-if(si == 0){
-	first.disabled = true;
-	zweit.disabled = false;
-	k=0;
-}
-}
+first.setAttribute("data-f", n - 1);
+zweit.setAttribute("data-f", n + 1);
 
 
 let arrayBuffer = await data.arrayBuffer();
@@ -138,19 +159,11 @@ ctx.moveTo(x, cnv.height/2);
 	  x=0;
 	  e.disabled = false
 	  
-	  if(k == files.length){
-	first.disabled = false;
-	zweit.disabled = true;
-}
-
-
-if(si == 0){
-	first.disabled = true;
-	zweit.disabled = false;
-
-}
+	 disabled(n);
   
-	  flag = false;}
+	  flag = false;
+	  
+	  }
   
 }
 
@@ -253,8 +266,7 @@ let recordedBlobs;
 let cnv2 = document.getElementById("recorded");
 let ctx2 = cnv2.getContext("2d");
 
-ctx2.fillStyle='white';
-ctx2.fillRect(0,0, cnv2.width, cnv2.height);
+
 
 let audioCtx, flag2 = false, track2, analyser2,  x2 = 0;
 
