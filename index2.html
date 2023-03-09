@@ -219,9 +219,10 @@ audio3 = decodedAudio;
   
   playSound.start(ctx3.currentTime);
   
-  analyser.fftSize = 2048;
+  analyser.fftSize = 128*2*2;
 
 let bufferLength =  analyser.frequencyBinCount;
+analyser.smoothingTimeConstant = 0.1;
 console.log(bufferLength);
 let dataArray = new Uint8Array(bufferLength);
 
@@ -244,18 +245,18 @@ var drawVisual3;
 
 	let d = dataArray;
 	
-	var sliceWidth =(cnv.width)/ bufferLength;
+	var sliceWidth =cnv.width * 1.0 / bufferLength;
 	
-	ctx.lineWidth = 0.25;
+	ctx.lineWidth = 1;
 	ctx.strokeStyle = "rgb(83,210,13)";
 	
 	ctx.beginPath();
 ctx.moveTo(x, cnv.height/2);
 	
-	for (var i = 0; i < bufferLength; i+=cnv.width/2) {
+	for (var i = 0; i < bufferLength; i+=128) {
 
 		  const v = (d[i]) / 128.0;
- const y = (v * cnv.height) / 2.0;
+ const y = (v * cnv.height) / 2;
 
   if (i === 0) {
    ctx.moveTo(x, y);
@@ -423,15 +424,16 @@ async function init(constraints) {
 if(!track2){
 		track2 = audioCtx.createMediaElementSource(document.getElementById("gum"));
 		 analyser2 = audioCtx.createAnalyser();
-		 analyser2.smoothingTimeConstant = 1.0;
+		 analyser2.smoothingTimeConstant = 0.1;
 		 track2.connect(analyser2);
 		 analyser2.connect(audioCtx.destination);
     }
 
 
-	analyser2.fftSize = 2048;
+	analyser2.fftSize = 128*2*2;
 
 	var bufferLength2 =  analyser2.frequencyBinCount;
+	
 	console.log(bufferLength2);
 	var dataArray2 = new Uint8Array(bufferLength2);
 
@@ -453,15 +455,15 @@ function draw2(){
 
 	let d = dataArray2;
 	
-	var sliceWidth2 =(cnv2.width)/ bufferLength2;
+	var sliceWidth2 = cnv2.width * 1/ bufferLength2;
 	
 	
 
-	ctx2.lineWidth = 0.25;
+	ctx2.lineWidth = 1;
 	ctx2.strokeStyle = "rgb(83,210,13)";
 	
 	ctx2.beginPath();
-for (var i = 0; i < bufferLength2; i+= 180){
+for (var i = 0; i < bufferLength2; i+= 128){
 		  const v2 = (d[i]) / 128.0;
 			const y2 = (v2 * cnv2.height) / 2.0;
 
