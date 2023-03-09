@@ -3,34 +3,57 @@
 	<style>
 		#mediaWrapper{
 			margin: 0 auto;
-			width: 100%;
+			width: 90%;
 			background: black;
 			max-width:2000px;
 			border-radius:4px;
-			border: 2px solid silver;
+			
 		}
-	.diva{margin-top: 0px;margin-bottom:0px;padding: 0px;}
-	button{padding: 5px;}
-	#cnv, #recorded{height: 200px; width: 100%; border:1px solid lightgreen;}
-	.podval{padding:20px;}
+		.footerpod{background: white;}
+		canvas{order: 20px solid green;width:97%;height: 200px;}
+	.diva{margin-top: 0px;margin-bottom:0px;padding: 0px;width:100%;order:2px solid brown;position:relative;}
+	.wr{
+		position:relative;
+		width: 100%;
+		order-bottom: 1px solid silver;
+	}
+	.diva.dictor{border-bottom: 1px solid silver;}
+	.diva.dictor::after{
+		
+		top:1em;
+		left:2em;
+		content:"Запись диктора";
+		color:silver;
+	
+		position:absolute;}
+		
+		.diva.voice::after{
+			top:1em;
+		left:2em;
+		content:"Ваша запись";
+		color:silver;
+		
+		position:absolute;}
+		}
+	
+	
+	
+	
+	.podval{padding:20px;background:white;}
 	.footerpod{
 		margin: 0 auto;
 		
 	}
 	 button{
-
-	margin-left:40px;
-	 padding: 10px 15px 10px 15px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 18px;
-    background: white;
-    color: rgb(2, 106, 203);
-    border: 2px solid rgb(2, 106, 203);
-    letter-spacing: 1px;
-    border-radius: 2px;
-    line-height: 1.8;
-    
+   height: 50px;
+	width: 75px;
+	margin: 5px;
+	background:orange;
+	vertical-align:bottom;
+	padding: 6px;
+	margin: 5px;
+	font-weight: bold;
+	line-height:1.2;
 }
 
 button:hover{
@@ -54,6 +77,11 @@ button[disabled], button[disabled]:hover {
 		margin: 0 auto;
 	}
 	.podval{text-align: center;}
+	img{
+		width:100px;
+		height:100px;
+		margin-top:4px;
+		}
 	button{
 		olor:green;
 		margin-top:10px;
@@ -71,33 +99,41 @@ button[disabled], button[disabled]:hover {
 	<body>
 		
 	<section id="mediaWrapper">
-	
-	<div class="diva">
+	<div class="wr">
+	<div class="diva dictor">
 	<canvas id="cnv"></canvas>
 	</div>
-		<div class="diva">
-	
+	</div>
+	<div class="wr">
+	<div class="diva voice">
 	<canvas id='recorded'></canvas>
-	
+	</div>
 	</div>
 
     <div class="podval">
 		<section class="footerpod">
 		
-		<button  onclick="getBuf(this);" id="first" data-f="-1" disabled>Предыдущая фраза</button> 
 		
+		<img onclick="getBuf(this);" id="first" data-f="-1" data-disabled="true" src="/musik/left-arrow.svg"  width="50" height="50"/>
 		
-        <button id="record">Запись</button>
+		<button id="dictor" data-f="0" onclick="getBuf(this);">Слушать диктора</button>
+		
+        <button id="record" data-record="Запись">Запись себя</button>
         <button id="play" disabled>Слушать себя</button>
-        <button id="dictor" data-f="0" onclick="getBuf(this);">Слушать диктора</button>
-       <button data-f="0" id="zweit" onclick="getBuf(this);">Следующия фраза</button>
-       </section>
+        
+       <img data-f="0" id="zweit" onclick="getBuf(this);" src="/musik/right-arrow.svg" width="50" height="50" data-disabled="false"/>
+      
+    
+    </section>
     </div>
+    </section>
+    
     <div>
+		
         <span id="errorMsg"></span>
     </div>
      <audio id="gum"></audio> 
-    </section>
+    
     <p>здравствуйте. добро пожаловать. доброе утро. добрый день</p>
 	<script>
 	'use strict';
@@ -116,22 +152,26 @@ var si = files.length;
 
 function disabled(n){
 	if(n < si){
-		zweit.disabled = false;
+		zweit.setAttribute("data-disabled", "false");
 	}
 	if(n > 0){
-		first.disabled = false;
+		first.setAttribute("data-disabled", "false");
 	}
 	if(n == 0){
-		first.disabled = true;
+		first.setAttribute("data-disabled", "true");
 	}
 	if(n == si - 1){
 
-		zweit.disabled = true;
+		zweit.setAttribute("data-disabled", "true");
+		
 	
 	}
 }
 
 async function getBuf(e){
+	if(e.getAttribute("data-disabled") && e.getAttribute("data-disabled") === "true"){
+		return;
+	}
 	let n = Number(e.getAttribute("data-f"));
 	
 	if(n < 0){
@@ -145,6 +185,7 @@ async function getBuf(e){
 	}
 
 	e.disabled = true;
+	e.setAttribute("data-disabled", "true");
 ctx3 = new AudioContext();
 
 var audio3;
@@ -195,6 +236,7 @@ drawf();
 var drawVisual3;
   
   function drawf(){
+	 // alert('drawf')
 	  drawVisual3 = requestAnimationFrame(drawf);
 	  
 	
@@ -204,13 +246,13 @@ var drawVisual3;
 	
 	var sliceWidth =(cnv.width)/ bufferLength;
 	
-	ctx.lineWidth = 1;
-	ctx.strokeStyle = "red";
+	ctx.lineWidth = 0.25;
+	ctx.strokeStyle = "rgb(83,210,13)";
 	
 	ctx.beginPath();
 ctx.moveTo(x, cnv.height/2);
 	
-	for (var i = 0; i < bufferLength; i+=80) {
+	for (var i = 0; i < bufferLength; i+=cnv.width/2) {
 
 		  const v = (d[i]) / 128.0;
  const y = (v * cnv.height) / 2.0;
@@ -233,7 +275,7 @@ ctx.moveTo(x, cnv.height/2);
 	  ctx3.close();
 	  x=0;
 	  e.disabled = false
-	  
+	  e.setAttribute("data-disabled", "false")
 	 disabled(n);
   
 	  flag = false;
@@ -261,8 +303,9 @@ const errorMsgElement = document.querySelector('span#errorMsg');
 var recordedVideo = gum;
 const recordButton = document.querySelector('button#record');
 recordButton.addEventListener('click', async() => {
-  if (recordButton.textContent === 'Запись') {
-	  
+	//alert(recordButton.getAttribute("data-record"))
+  if (recordButton.getAttribute("data-record") === 'Запись') {
+	  recordButton.setAttribute("data-record", "no");
 	  const constraints = {
     audio: {
       echoCancellation: {exact: true}
@@ -275,8 +318,10 @@ recordButton.addEventListener('click', async() => {
 	  
     startRecording();
   } else {
+	 // alert("stop");
     stopRecording();
-    recordButton.textContent = 'Запись';
+    recordButton.setAttribute("data-record", 'Запись');
+    recordButton.textContent = "Запись себя";
     playButton.disabled = false;
    
     
@@ -412,11 +457,11 @@ function draw2(){
 	
 	
 
-	ctx2.lineWidth = 1;
-	ctx2.strokeStyle = "red";
+	ctx2.lineWidth = 0.25;
+	ctx2.strokeStyle = "rgb(83,210,13)";
 	
 	ctx2.beginPath();
-for (var i = 0; i < bufferLength2; i+= 80){
+for (var i = 0; i < bufferLength2; i+= 180){
 		  const v2 = (d[i]) / 128.0;
 			const y2 = (v2 * cnv2.height) / 2.0;
 
