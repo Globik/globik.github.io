@@ -225,12 +225,13 @@ let bufferLength =  analyser.frequencyBinCount;
 analyser.smoothingTimeConstant = 0.1;
 console.log(bufferLength);
 let dataArray = new Uint8Array(bufferLength);
+analyser.getByteTimeDomainData(dataArray);
 
 if(!flag){
 	ctx.clearRect(0,0,cnv.width, cnv.height);
 	flag = true;
 }
-
+ctx.clearRect(0,0,cnv.width, cnv.height);
 drawf();
 
 

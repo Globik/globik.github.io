@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+	<head><title>tests</title>
+	<style>.error{color:red;}</style>
+		</head>
+	<body>
+		</body>
+		<h3>Tests</h3>
+		<hr>
+		<div>Протестируйте конструкцию <b>Promise</b>. Нажмите кнопочку<br><button onclick="test1();">Promise</button></div>
+		<hr><div>Протестируйте конструкцию <b>await</b>. Нажмите кнопочку<br><button onclick="test2();">Await</button></div>
+		<hr><div><b>Выхлоп:</b></div>
+		<output id="out"></output>
+		
+		<script>
+		var out=document.getElementById("out");
+		function test1(){
+			try{
+				out.innerHTML+="Promise OK<br>"
+				return new Promise(function(res, rj){
+					res(1);
+				});
+			}catch(e){
+				out.innerHTML+='<span class="error"><b> Promise error: </b>'+e+'</span><br>'
+			}
+		}
+		function test2(){
+			try{
+				async function suka(){
+					let a=await test1();
+					alert("Все заебись!");
+					out.innerHTML+="Await OK<br>"
+				}
+				suka(); 
+			}catch(e){
+				out.innerHTML+='<span class="error"><b> Await error: </b>'+e+'</span><br>'
+			}
+		}
+		</script>
+		</html>
+		
