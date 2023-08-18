@@ -1,35 +1,80 @@
 <html>
 	<head>
-	 <link href="https://vjs.zencdn.net/8.3.0/video-js.min.css" rel="stylesheet" />
+	<!-- <link href="https://vjs.zencdn.net/8.3.0/video-js.min.css" rel="stylesheet" /> -->
+	<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+	
 	 <style>
 		 video{
 			 border: 2px solid green;
 		 }
 		 </style>
+		
+		 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
+		 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 	</head>
 	<body>
 	
-<video preload="auto" id="fuck" height="300" width="300" >
+<video preload="auto" id="fuck" height="300" width="300" controls crossorigin playsinline>
 <source  src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8" type="application/x-mpegURL">
 </video>
 <button onclick="fi();">PLAY</button>
-<script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script>
+<!-- <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script> -->
 <script>
 	function fi(){
-		alert(1)
-		
-		try{
-videojs("fuck", {aspectRatio: "16:3"}, function onPlayerReady(){
-	alert("play")
-this.play();	
-})
-}catch(e){
-	alert(e)
+	
 }
 
-//document.getElementById("fuck").play();
 
-}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const video = document.querySelector("#fuck");
+  const source = video.getElementsByTagName("source")[0].src;
+  
+  // For more options see: https://github.com/sampotts/plyr/#options
+  // captions.update is required for captions to work with hls.js
+  const defaultOptions = {};
+
+  if (Hls.isSupported()) {
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+
+    // From the m3u8 playlist, hls parses the manifest and returns
+    // all available video qualities. This is important, in this approach,
+    // we will have one source on the Plyr player.
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+
+      // Transform available levels into an array of integers (height values).
+      const availableQualities = hls.levels.map((l) => l.height)
+
+      // Add new qualities to option
+      defaultOptions.quality = {
+        default: availableQualities[0],
+        options: availableQualities,
+        // this ensures Plyr to use Hls to update quality level
+        forced: true,        
+        onChange: (e) => updateQuality(e),
+      }
+
+      // Initialize here
+      const player = new Plyr(video, defaultOptions);
+    });
+    hls.attachMedia(video);
+    window.hls = hls;
+  } else {
+    // default options with no quality update in case Hls is not supported
+    const player = new Plyr(video, defaultOptions);
+  }
+
+  function updateQuality(newQuality) {
+    window.hls.levels.forEach((level, levelIndex) => {
+      if (level.height === newQuality) {
+        console.log("Found quality match with " + newQuality);
+        window.hls.currentLevel = levelIndex;
+      }
+    });
+  }
+});
 </script>
 </body>
 </html>
