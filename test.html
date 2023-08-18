@@ -9,7 +9,7 @@
 	</head>
 	<body>
 	
-<video preload="auto" id="fuck" height="300" width="300" src="blob:https://39granica.ru/af9513e1-508e-472a-81e1-d13f4ab1e637">
+<video preload="auto" id="fuck" height="300" width="300" >
 <source  src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8" type="application/x-mpegURL">
 </video>
 <button onclick="fi();">PLAY</button>
@@ -17,17 +17,18 @@
 <script>
 	function fi(){
 		alert(1)
-		/*
+		
 		try{
-videojs("fuck", {}, function onPlayerReady(){
+videojs("fuck", {aspectRatio: "16:3"}, function onPlayerReady(){
 	alert("play")
 this.play();	
 })
 }catch(e){
 	alert(e)
 }
-*/
-fuck.play();
+
+//document.getElementById("fuck").play();
+
 }
 </script>
 </body>
