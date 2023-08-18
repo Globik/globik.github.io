@@ -8,26 +8,31 @@
 			 border: 2px solid green;
 		 }
 		 </style>
-		
+		 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 		 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 		 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 	</head>
 	<body>
-	
-<video preload="auto" id="fuck" height="300" width="300" controls crossorigin playsinline>
+		 <img class="icon" src="w4.png" alt="">
+	 <div class="camera-group">
+        <h2 class="text-center mt-5">RU LT Чернышевское - Кибартай - очередь перед литовским пунктом пропуска со стороны
+          России</h2>
+        <h3 class="text-center mt-5">Онлайн вебкамера (работает только с российскими ip, при доступе из-за рубежа
+          используйте VPN)</h3>
+          </div>
+<video preload="auto" id="vjs_video_3_html5_api"  height="300" width="300" controls crossorigin playsinline poster="img/slider/Chernyshevskoye/2023-08-18_10-44-12.jpg">
 <source  src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8" type="application/x-mpegURL">
 </video>
-<button onclick="fi();">PLAY</button>
+<
 <!-- <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script> -->
-<script>
-	function fi(){
-	
-}
-
-
+<div class="text-center justify-content-center mt-3 mb-3">
+          <button class="btn btn-primary draw col-md-2 col-10" data-draw="1">Сохранить кадр</button>
+          
+          <canvas id="cnv" class="canvas"></canvas>
+        </div>
 
 document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector("#fuck");
+  const video = document.querySelector("#vjs_video_3_html5_api");
   const source = video.getElementsByTagName("source")[0].src;
   
   // For more options see: https://github.com/sampotts/plyr/#options
@@ -75,6 +80,36 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
+const groups = document.querySelectorAll('.camera-group');
+
+ const btnDraws = document.querySelectorAll('.draw');
+
+    btnDraws.forEach(btnDraw => {
+      btnDraw.addEventListener('click', (e) => {
+        const num = btnDraw.dataset.draw;
+        const icon = document.querySelector('.icon');
+       // const canvas = groups[num - 1].querySelector('.canvas')
+const canvas=document.querySelector('.canvas');
+        canvas.width = 1920;
+        canvas.height = 1080;
+
+        const ctx = canvas.getContext('2d');
+
+        const video = document.getElementById("cnv")//groups[num - 1].querySelector('video');
+
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        ctx.drawImage(icon, canvas.width - 60, 30, 30, 30);
+
+        canvas.toBlob(function (blob) {
+          saveAs(blob, "39granica.png");
+        });
+      })
+    })
+ // }, 100)
+
+//})
+
 </script>
 </body>
 </html>
