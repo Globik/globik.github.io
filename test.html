@@ -93,6 +93,9 @@ document.addEventListener("DOMContentLoaded", function() {
 		  alert("ready")
 		  player.play();
 	  })
+	  player.on('error', function(e){
+		  alert(e);
+	  })
     });
     hls.attachMedia(video);
     window.hls = hls;
