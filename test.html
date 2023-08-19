@@ -52,7 +52,7 @@ video::poster{
         </div>
 <script>
 	var tru;var video;
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", function() {
    video = document.querySelector("#vjs_video_3_html5_api");
   const source = video.getElementsByTagName("source")[0].src;
   try{
@@ -64,6 +64,7 @@ document.addEventListener("DOMContentLoaded", () => {
  
 
   if (Hls.isSupported()) {
+	  alert("hls supported");
     // For more Hls.js options, see https://github.com/dailymotion/hls.js
     const hls = new Hls();
     hls.loadSource(source);
@@ -88,12 +89,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Initialize here
       const player = new Plyr(video, defaultOptions);
+      player.on('ready', function(ev){
+		  alert("ready")
+		  player.play();
+	  })
     });
     hls.attachMedia(video);
     window.hls = hls;
   } else {
+	  alert("hls not supported");
     // default options with no quality update in case Hls is not supported
     const player =  Plyr.setup(video, defaultOptions);
+     player.on('ready', function(ev){
+		  alert("ready2")
+		  player.play();
+	  })
   }
 
   function updateQuality(newQuality) {
@@ -128,8 +138,8 @@ img.onload=function(){
 
         canvas2.toBlob(function (blob) {
           saveAs(blob, "39granica.png");
-          video.style.width="100%";
-          video.style.height=canvas2.height;
+        //  video.style.width="100%";
+         // video.style.height=canvas2.height;
         });
 	}
       })
