@@ -1,28 +1,53 @@
 <html>
 	<head>
-	<!-- <link href="https://vjs.zencdn.net/8.3.0/video-js.min.css" rel="stylesheet" /> -->
+	 
 	<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
 	
-	 <style>
-		 video{
-			 border: 2px solid green;
-		 }
-		 </style>
+	 
 		 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 		 <script src="https://cdn.plyr.io/3.7.8/plyr.js"></script>
 		 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+		 <style>
+		
+	
+#videocontainer{
+	display:block;
+	position:relative;
+}
+#pic{
+	width:100px;
+	height:100px;
+	position:absolute;
+	
+	top:10;
+	right:20;
+	z-index:10;
+	background-image: url(w4.png);
+	background-position: center;
+	background-size: 100%;
+	background-repeat: no-repeat;
+}
+video::poster{
+	object-fit:cover;
+}
+
+		 </style>
 	</head>
 	<body>
-		 <img class="icon" src="w4.png" alt="">
+		 
 	 <div class="camera-group">
         <h2 class="text-center mt-5">RU LT Чернышевское - Кибартай - очередь перед литовским пунктом пропуска со стороны
           России</h2>
         <h3 class="text-center mt-5">Онлайн вебкамера (работает только с российскими ip, при доступе из-за рубежа
           используйте VPN)</h3>
           </div>
-<video preload="auto" id="vjs_video_3_html5_api"  height="300" width="300" controls crossorigin playsinline poster="img/slider/Chernyshevskoye/2023-08-18_10-44-12.jpg">
+          <div id="videocontainer">
+			  <div id="pic"></div>
+<video preload="auto" class="player" id="vjs_video_3_html5_api"  controls playsinline data-poster="r.png">
 <source  src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8" type="application/x-mpegURL">
+<!-- <track kind="captions" label="English" srclang="en" src="pic.vtt" default> -->
 </video>
+</div>
 <
 <!-- <script src="https://vjs.zencdn.net/8.3.0/video.min.js"></script> -->
 <div class="text-center justify-content-center mt-3 mb-3">
@@ -31,13 +56,16 @@
           <canvas id="cnv" class="canvas"></canvas>
         </div>
 <script>
+	var tru;var video;
 document.addEventListener("DOMContentLoaded", () => {
-  const video = document.querySelector("#vjs_video_3_html5_api");
+   video = document.querySelector("#vjs_video_3_html5_api");
   const source = video.getElementsByTagName("source")[0].src;
-  
+
   // For more options see: https://github.com/sampotts/plyr/#options
   // captions.update is required for captions to work with hls.js
+  
   const defaultOptions = {};
+ 
 
   if (Hls.isSupported()) {
     // For more Hls.js options, see https://github.com/dailymotion/hls.js
@@ -59,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // this ensures Plyr to use Hls to update quality level
         forced: true,        
         onChange: (e) => updateQuality(e),
+        captions: {update: true}
       }
 
       // Initialize here
@@ -68,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     window.hls = hls;
   } else {
     // default options with no quality update in case Hls is not supported
-    const player = new Plyr(video, defaultOptions);
+    const player =  Plyr.setup(video, defaultOptions);
   }
 
   function updateQuality(newQuality) {
@@ -90,21 +119,23 @@ const groups = document.querySelectorAll('.camera-group');
         const num = btnDraw.dataset.draw;
         const icon = document.querySelector('.icon');
        // const canvas = groups[num - 1].querySelector('.canvas')
-const canvas=document.querySelector('.canvas');
-        canvas.width = 1920;
-        canvas.height = 1080;
+const canvas2=document.querySelector('.canvas');
+        canvas2.width = 1920;
+        canvas2.height = 1080;
 
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas2.getContext('2d');
+var img=new Image()
+img.src="w4.png";
+img.onload=function(){
+        ctx.drawImage(video, 0, 0, canvas2.width, canvas2.height);
+        ctx.drawImage(img, canvas2.width - 150, 50, 100, 100);
 
-        const video = document.getElementById("cnv")//groups[num - 1].querySelector('video');
-
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        ctx.drawImage(icon, canvas.width - 60, 30, 30, 30);
-
-        canvas.toBlob(function (blob) {
+        canvas2.toBlob(function (blob) {
           saveAs(blob, "39granica.png");
         });
+	}
       })
+  
     })
  // }, 100)
 
