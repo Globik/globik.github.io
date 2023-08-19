@@ -38,6 +38,7 @@ video::poster{
 	</head>
 	<body>
 		<video id="video" autoplay muted controls playsinline crossorigin></video>
+		<output id="out"></output>
 		<button onclick="screen();">screen</button>
 		<canvas class="canvas"></canvas>
 		<script>
@@ -50,13 +51,13 @@ video::poster{
 			hls.attachMedia(vid);
 			//vid.play();
 			vid.oncanplay=function(){
-				alert("can play")
+				deb("can play")
 				vid.play();
 			}
 			vid.onloadedmetadata=function(e){
-				alert("onloadedmetadata"+JSON.stringify(e));
-				vid.currentTime=10;
-				vid.play();
+				deb("onloadedmetadata"+JSON.stringify(e));
+				vid.currentTime=40;
+				//vid.play();
 			}
 			vid.onerror=function(e){
 				alert(e)
@@ -87,6 +88,9 @@ img.onload=function(){
          // video.style.height=canvas2.height;
         });
 	}
+		}
+		function deb(s){
+			out.innerHTML+=s+'<br>';
 		}
 		</script>
 		</body></html>
