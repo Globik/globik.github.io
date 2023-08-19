@@ -53,7 +53,14 @@ video::poster{
 				alert("can play")
 				vid.play();
 			}
-			
+			vid.onloadedmetadata=function(e){
+				alert("onloadedmetadata"+JSON.stringify(e));
+				vid.currentTime=10;
+				vid.play();
+			}
+			vid.onerror=function(e){
+				alert(e)
+			}
 			
 		}
 		//vid.canPlayType('application/vnd.apple.mpegurl')
