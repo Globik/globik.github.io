@@ -1,4 +1,4 @@
-<html>
+<!DOCTYPE html><html>
 	<head>
 	 
 	<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
@@ -13,6 +13,7 @@
 #videocontainer{
 	display:block;
 	position:relative;
+	width:100%;
 }
 #pic{
 	width:100px;
@@ -54,6 +55,7 @@ video::poster{
 document.addEventListener("DOMContentLoaded", () => {
    video = document.querySelector("#vjs_video_3_html5_api");
   const source = video.getElementsByTagName("source")[0].src;
+  try{
 
   // For more options see: https://github.com/sampotts/plyr/#options
   // captions.update is required for captions to work with hls.js
@@ -102,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+}catch(e){alert(e)}
 });
 
 
