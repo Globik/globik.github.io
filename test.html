@@ -39,7 +39,7 @@ video::poster{
 	 
           <div id="videocontainer">
 			  <div id="pic"></div>
-<video preload="auto" class="player" id="vjs_video_3_html5_api"  controls  poster="r.png" crossorigin playsinline>
+<video preload="none" class="player" id="vjs_video_3_html5_api"  controls  poster="r.png" crossorigin playsinline>
 <source  src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8" type="application/x-mpegURL">
 <!-- <track kind="captions" label="English" srclang="en" src="pic.vtt" default> -->
 </video>
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function() {
  
 
   if (Hls.isSupported()) {
-	  alert("hls supported");
+	 // alert("hls supported");
     // For more Hls.js options, see https://github.com/dailymotion/hls.js
     const hls = new Hls();
     hls.loadSource(source);
@@ -89,9 +89,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // Initialize here
       const player = new Plyr(video, defaultOptions);
-      player.play();
+     // player.play();
       player.on('ready', function(ev){
-		  alert("ready")
+		 // alert("ready")
 		  player.play();
 	  })
 	  player.on('error', function(e){
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
     hls.attachMedia(video);
     window.hls = hls;
   } else {
-	  alert("hls not supported");
+	 // alert("hls not supported");
     // default options with no quality update in case Hls is not supported
     const player =  Plyr.setup(video, defaultOptions);
      player.on('ready', function(ev){
