@@ -39,7 +39,7 @@ video::poster{
 	 
           <div id="videocontainer">
 			  <div id="pic"></div>
-<video preload="auto" class="player" id="vjs_video_3_html5_api"  controls  poster="r.png">
+<video preload="auto" class="player" id="vjs_video_3_html5_api"  controls  poster="r.png" crossorigin playsinline>
 <source  src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8" type="application/x-mpegURL">
 <!-- <track kind="captions" label="English" srclang="en" src="pic.vtt" default> -->
 </video>
@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
       // Initialize here
       const player = new Plyr(video, defaultOptions);
+      player.play();
       player.on('ready', function(ev){
 		  alert("ready")
 		  player.play();
