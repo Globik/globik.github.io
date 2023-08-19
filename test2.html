@@ -37,17 +37,21 @@ video::poster{
 		 </style>
 	</head>
 	<body>
-		<video id="video" controls playsinline crossorigin></video>
+		<video id="video" preload="auto" autoplay muted controls playsinline crossorigin></video>
 		<button onclick="screen();">screen</button>
 		<canvas class="canvas"></canvas>
 		<script>
 		var vid=document.getElementById("video");
 		if(Hls.isSupported()){
-			
+			alert("hls supported")
 			var hls=new Hls();
 			hls.loadSource("https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8");
 			hls.attachMedia(vid);
-			vid.play();
+			//vid.play();
+			vid.oncanplay=function(){
+				alert("can play")
+				vid.play();
+			}
 		}
 		function screen(){
 		const canvas2=document.querySelector('.canvas');
