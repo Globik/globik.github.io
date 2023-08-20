@@ -1,6 +1,8 @@
 <!DOCTYPE html><html>
 	<head>
-	 
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
 <!--	<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
 	
 	 
@@ -9,9 +11,12 @@
 		 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 		 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 		 <style>
-		
-	video{
+		#cont{
+			width:100%;
+		}
+	video,canvas{
 		border:10px solid red;
+		width:100%;
 	}
 #videocontainer{
 	display:block;
@@ -37,8 +42,8 @@ video::poster{
 
 		 </style>
 	</head>
-	<body><h1>V5</h1>
-		<video id="video" autoplay muted controls playsinline crossorigin></video>
+	<body><h1>V7</h1>
+		<div id="cont"><video id="video" autoplay muted controls playsinline crossorigin></video></div>
 		<output id="out"></output>
 		<button onclick="screen();">screen</button>
 	 
@@ -89,7 +94,7 @@ video::poster{
         //document.body.appendChild(canvas2);
        // document.body.appendChild(img);
         
-    html2canvas(document.querySelector("#video")).then(canvas => {
+    html2canvas(document.querySelector("#cont")).then(canvas => {
     document.body.appendChild(canvas)
 });
 
