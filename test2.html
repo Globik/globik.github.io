@@ -41,8 +41,8 @@ canvas{
 
 		 </style>
 	</head>
-	<body><h1>V8</h1>
-		<!-- <div id="cont"><video id="video" autoplay muted controls playsinline crossorigin></video></div> -->
+	<body><h1>V9</h1>
+	
 		<div id="cont"><div id="cont2"></div><video class="player" id="vjs_video_3_html5_api" autoplay muted controls playsinline crossorigin  poster="r.png">
 <source  src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8" type="application/x-mpegURL">
 
@@ -54,7 +54,7 @@ canvas{
 		<canvas class="canvas"></canvas>
 	 
 		<script>
-	var tru;
+
 		
 document.addEventListener("DOMContentLoaded", function() {
   var video = document.querySelector("#vjs_video_3_html5_api");
@@ -63,8 +63,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
   if (Hls.isSupported()) {
-	 // alert("hls supported");
-    // For more Hls.js options, see https://github.com/dailymotion/hls.js
     const hls = new Hls();
     hls.loadSource(source);
     hls.attachMedia(video);
@@ -75,23 +73,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			video.onloadedmetadata=function(ev){
 				deb("onloadedmetadata"+JSON.stringify(ev));
 				video.currentTime = 0;
-				/*
-				 tru=ev.target.addTextTrack("captions", "Titles", "ru");
-   tru.mode="showing";
-   let cue=new VTTCue(0.0,10000090.9, "<c.base>we</c>");
-   cue.snapToLines=false;
-   cue.lineAlign='center';
-   
-  cue.positionAlign='center';
-  cue.position=10;
-   cue.size="100";
-  cue.line=2;
-  
-   cue.align="start";// start end 
-   tru.addCue(cue);
-   video.style.setProperty("--some-image", "url(/janus.png");
-  */
-   
+				
   
    
 			}
@@ -126,18 +108,13 @@ var img=new Image();
 img.src="/janus.png";
 img.onload=function(){
         ctx.drawImage(video, 0, 0, canvas2.width, canvas2.height);
-        ctx.drawImage(img, 50, 50, 100, 100);
+        ctx.drawImage(img, 50, 50, 150, 150);
 
         canvas2.toBlob(function (blob) {
           saveAs(blob, "39granica.png");
         });
 	}
-/*
-	 html2canvas(document.querySelector("#vjs_video_3_html5_api")).then(canvas => {
-    document.body.appendChild(canvas);
-    canvas.toBlob(function (blob) {
-          saveAs(blob, "39granica.png");
-        });*/
+
 });
 	
      
@@ -145,74 +122,8 @@ img.onload=function(){
      
     
         });
-	
-	
-	
-	
-    
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		/*
-		
-		if(Hls.isSupported()){
-			//alert("hls supported")
-			var hls=new Hls();
-			hls.loadSource("https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8");
-			hls.attachMedia(vid);
-			//vid.play();
-			vid.oncanplay=function(){
-				deb("can play")
-				//vid.play();
-			}
-			vid.onloadedmetadata=function(e){
-				deb("onloadedmetadata"+JSON.stringify(e));
-				vid.currentTime=5;
-				//vid.play();
-			}
-			vid.onerror=function(e){
-				alert(e)
-			}
-			
-		}
-		//vid.canPlayType('application/vnd.apple.mpegurl')
-		//	vid.src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8";
-			//vid.onloadedmetadata=function(){
-				//vid.play();
-			//}
-			*/
-		function screen(){
-			var vidi=document.getElementById("video");
-		//	var vidi2=document.getElementById("video2");
-	//	const canvas2=document.querySelector('.canvas');
-	//const canvas2=document.createElement('canvas');
-	//var img=document.createElement('img');
-    //    canvas2.width = 500;//1920;
-    //    canvas2.height =500;// 1080;
 
-      //  const ctx = canvas2.getContext('2d');
-      //  ctx.clearRect(0,0,500,500);
-      //  ctx.drawImage(vidi,0,0, /*canvas2.width, canvas2.height*/500,500);
-       // const stream=canvas2.captureStream();
-       // vidi2.srcObject=stream;
-       //let sifa = canvas2.toDataURL('image/jpeg', 0.5);
-       //img.src=sifa;
-        //document.body.appendChild(canvas2);
-       // document.body.appendChild(img);
-        
-    html2canvas(document.querySelector("#cont")).then(canvas => {
-    document.body.appendChild(canvas)
-});
-
-		}
+		
 		function deb(s){
 			out.innerHTML+=s+'<br>';
 		}
