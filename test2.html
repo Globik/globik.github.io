@@ -3,52 +3,165 @@
 	 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
-<!--	<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css">
+<!--	<link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css"> -->
 	
 	 
-		 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script> -->
+		 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script> 
 		 
 		 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-		 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+		<!-- <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script> -->
 		 <style>
-		#cont{
-			width:100%;
-		}
-	video,canvas{
-		border:10px solid red;
-		width:100%;
-	}
-#videocontainer{
-	display:block;
-	position:relative;
-	width:100%;
-}
-#pic{
-	width:100px;
-	height:100px;
-	position:absolute;
-	
-	top:10;
-	right:20;
-	z-index:10;
-	background-image: url(w4.png);
+			 #cont{
+				 display:block;
+				 position:relative;
+				width:100%;
+			 }
+			 #cont2{
+				 position:absolute;
+				 top:10px;
+				 left:10px;
+				 z-index:10;
+				 width:50px;
+				 height:50px;
+				 background-image: url(/janus.png);
 	background-position: center;
 	background-size: 100%;
 	background-repeat: no-repeat;
+	backgrond-color:rgba(0,0,0,0);
+			 }
+	#vjs_video_3_html5_api{
+	
+width:100%;
+margin:0 auto;
 }
-video::poster{
-	object-fit:cover;
+
+canvas{
+	width:100%;
 }
 
 		 </style>
 	</head>
-	<body><h1>V7</h1>
-		<div id="cont"><video id="video" autoplay muted controls playsinline crossorigin></video></div>
+	<body><h1>V8</h1>
+		<!-- <div id="cont"><video id="video" autoplay muted controls playsinline crossorigin></video></div> -->
+		<div id="cont"><div id="cont2"></div><video class="player" id="vjs_video_3_html5_api" autoplay muted controls playsinline crossorigin  poster="r.png">
+<source  src="https://media.gov39.ru/webcam-rec/mapp_chernyshevskoe.stream/playlist.m3u8" type="application/x-mpegURL">
+
+</video></div>
+<div class="text-center justify-content-center mt-3 mb-3">
+          <button class="btn btn-primary draw col-md-2 col-10" data-draw="1">Сохранить кадр</button>
+          </div>
 		<output id="out"></output>
-		<button onclick="screen();">screen</button>
+		<canvas class="canvas"></canvas>
 	 
 		<script>
-		var vid=document.getElementById("video");
+	var tru;
+		
+document.addEventListener("DOMContentLoaded", function() {
+  var video = document.querySelector("#vjs_video_3_html5_api");
+  const source = video.getElementsByTagName("source")[0].src;
+ 
+
+
+  if (Hls.isSupported()) {
+	 // alert("hls supported");
+    // For more Hls.js options, see https://github.com/dailymotion/hls.js
+    const hls = new Hls();
+    hls.loadSource(source);
+    hls.attachMedia(video);
+    video.oncanplay=function(){
+				deb("can play")
+			
+			}
+			video.onloadedmetadata=function(ev){
+				deb("onloadedmetadata"+JSON.stringify(ev));
+				video.currentTime = 0;
+				/*
+				 tru=ev.target.addTextTrack("captions", "Titles", "ru");
+   tru.mode="showing";
+   let cue=new VTTCue(0.0,10000090.9, "<c.base>we</c>");
+   cue.snapToLines=false;
+   cue.lineAlign='center';
+   
+  cue.positionAlign='center';
+  cue.position=10;
+   cue.size="100";
+  cue.line=2;
+  
+   cue.align="start";// start end 
+   tru.addCue(cue);
+   video.style.setProperty("--some-image", "url(/janus.png");
+  */
+   
+  
+   
+			}
+			video.onerror=function(e){
+				alert(e)
+			}
+  }else{
+	  alert("hls not supported by your browser")
+  }
+
+ 
+  });
+
+
+
+		
+		
+		const btnDraws = document.querySelectorAll('.draw');
+
+    btnDraws.forEach(btnDraw => {
+      btnDraw.addEventListener('click', (e) => {
+     var video = document.querySelector("#vjs_video_3_html5_api");
+     
+     
+       
+const canvas2=document.querySelector(".canvas");
+        canvas2.width = video.videoWidth;
+        canvas2.height = video.videoHeight;
+
+        const ctx = canvas2.getContext('2d');
+var img=new Image();
+img.src="/janus.png";
+img.onload=function(){
+        ctx.drawImage(video, 0, 0, canvas2.width, canvas2.height);
+        ctx.drawImage(img, 50, 50, 100, 100);
+
+        canvas2.toBlob(function (blob) {
+          saveAs(blob, "39granica.png");
+        });
+	}
+/*
+	 html2canvas(document.querySelector("#vjs_video_3_html5_api")).then(canvas => {
+    document.body.appendChild(canvas);
+    canvas.toBlob(function (blob) {
+          saveAs(blob, "39granica.png");
+        });*/
+});
+	
+     
+     
+     
+    
+        });
+	
+	
+	
+	
+    
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		/*
 		
 		if(Hls.isSupported()){
 			//alert("hls supported")
@@ -75,6 +188,7 @@ video::poster{
 			//vid.onloadedmetadata=function(){
 				//vid.play();
 			//}
+			*/
 		function screen(){
 			var vidi=document.getElementById("video");
 		//	var vidi2=document.getElementById("video2");
