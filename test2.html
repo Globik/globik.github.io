@@ -70,13 +70,14 @@ video::poster{
 				//vid.play();
 			//}
 		function screen(){
-			var vid=document.getElementById("video");
+			var vidi=document.getElementById("video");
 		const canvas2=document.querySelector('.canvas');
         canvas2.width = 1920;
         canvas2.height = 1080;
 
         const ctx = canvas2.getContext('2d');
-        ctx.drawImage(vid, 0, 0, /*canvas2.width, canvas2.height*/500,500);
+        ctx.clearRect(0,0,500,500);
+        ctx.drawImage(vidi,50,50, /*canvas2.width, canvas2.height*/500,500);
 var img=new Image()
 img.src="w4.png";
 img.onload=function(){
