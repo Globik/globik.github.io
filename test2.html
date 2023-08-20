@@ -36,11 +36,11 @@ video::poster{
 
 		 </style>
 	</head>
-	<body>
+	<body><h1>V1</h1>
 		<video id="video" autoplay muted controls playsinline crossorigin></video>
 		<output id="out"></output>
 		<button onclick="screen();">screen</button>
-		<canvas class="canvas"></canvas>
+		<!-- <canvas class="canvas"></canvas> -->
 		<script>
 		var vid=document.getElementById("video");
 		
@@ -71,13 +71,15 @@ video::poster{
 			//}
 		function screen(){
 			var vidi=document.getElementById("video");
-		const canvas2=document.querySelector('.canvas');
+	//	const canvas2=document.querySelector('.canvas');
+	const canvas2=document.createElement('canvas');
         canvas2.width = 1920;
         canvas2.height = 1080;
 
         const ctx = canvas2.getContext('2d');
         ctx.clearRect(0,0,500,500);
         ctx.drawImage(vidi,50,50, /*canvas2.width, canvas2.height*/500,500);
+        document.body.appendChild(canvas2);
 var img=new Image()
 img.src="w4.png";
 img.onload=function(){
