@@ -7,6 +7,7 @@
 		 <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script> -->
 		 
 		 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+		 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 		 <style>
 		
 	video{
@@ -36,7 +37,7 @@ video::poster{
 
 		 </style>
 	</head>
-	<body><h1>V3</h1>
+	<body><h1>V4</h1>
 		<video id="video" autoplay muted controls playsinline crossorigin></video>
 		<output id="out"></output>
 		<button onclick="screen();">screen</button>
@@ -81,12 +82,16 @@ video::poster{
         const ctx = canvas2.getContext('2d');
         ctx.clearRect(0,0,500,500);
         ctx.drawImage(vidi,0,0, /*canvas2.width, canvas2.height*/500,500);
-        const stream=canvas2.captureStream();
-        vidi2.srcObject=stream;
+       // const stream=canvas2.captureStream();
+       // vidi2.srcObject=stream;
        let sifa = canvas2.toDataURL('image/jpeg', 0.5);
        img.src=sifa;
         //document.body.appendChild(canvas2);
         document.body.appendChild(img);
+        
+    html2canvas(document.querySelector("#video")).then(canvas => {
+    document.body.appendChild(canvas)
+});
 
 		}
 		function deb(s){
