@@ -37,11 +37,11 @@ video::poster{
 
 		 </style>
 	</head>
-	<body><h1>V4</h1>
+	<body><h1>V5</h1>
 		<video id="video" autoplay muted controls playsinline crossorigin></video>
 		<output id="out"></output>
 		<button onclick="screen();">screen</button>
-	 <video id="video2" autoplay muted></video> 
+	 
 		<script>
 		var vid=document.getElementById("video");
 		
@@ -72,22 +72,22 @@ video::poster{
 			//}
 		function screen(){
 			var vidi=document.getElementById("video");
-			var vidi2=document.getElementById("video2");
+		//	var vidi2=document.getElementById("video2");
 	//	const canvas2=document.querySelector('.canvas');
-	const canvas2=document.createElement('canvas');
-	var img=document.createElement('img');
-        canvas2.width = 500;//1920;
-        canvas2.height =500;// 1080;
+	//const canvas2=document.createElement('canvas');
+	//var img=document.createElement('img');
+    //    canvas2.width = 500;//1920;
+    //    canvas2.height =500;// 1080;
 
-        const ctx = canvas2.getContext('2d');
-        ctx.clearRect(0,0,500,500);
-        ctx.drawImage(vidi,0,0, /*canvas2.width, canvas2.height*/500,500);
+      //  const ctx = canvas2.getContext('2d');
+      //  ctx.clearRect(0,0,500,500);
+      //  ctx.drawImage(vidi,0,0, /*canvas2.width, canvas2.height*/500,500);
        // const stream=canvas2.captureStream();
        // vidi2.srcObject=stream;
-       let sifa = canvas2.toDataURL('image/jpeg', 0.5);
-       img.src=sifa;
+       //let sifa = canvas2.toDataURL('image/jpeg', 0.5);
+       //img.src=sifa;
         //document.body.appendChild(canvas2);
-        document.body.appendChild(img);
+       // document.body.appendChild(img);
         
     html2canvas(document.querySelector("#video")).then(canvas => {
     document.body.appendChild(canvas)
