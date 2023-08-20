@@ -78,11 +78,13 @@ video::poster{
         const ctx = canvas2.getContext('2d');
 var img=new Image()
 img.src="w4.png";
-
+vid.onload=function(){
+	alert("vid onloaded")
+}
 img.onload=function(){
 	setTimeout(function(){
         ctx.drawImage(vid, 0, 0, /*canvas2.width, canvas2.height*/500,500);
-        ctx.drawImage(img, 50, 50, 100, 100);
+      //  ctx.drawImage(img, 50, 50, 100, 100);
 
         canvas2.toBlob(function (blob) {
           saveAs(blob, "39granica.png");
