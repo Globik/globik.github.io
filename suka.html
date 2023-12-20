@@ -1,0 +1,25 @@
+<html>
+<body>
+<h1>video3</h1>
+<video id="fuck" autoplay muted></video>
+<button onclick="play();">play</button>
+<script>
+
+	async function play(el) {
+  console.log('Requesting local stream');
+ // startbtn.disabled = true;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
+    console.log('Received local stream');
+    document.getElementById("fuck").srcObject = stream;
+    localStream = stream;
+    //callButton.disabled = false;
+  } catch (e) {
+    alert(`getUserMedia() error: ${e.name}`);
+  }
+}
+
+</script>
+</body>
+
+</html>

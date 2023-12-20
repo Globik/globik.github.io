@@ -2,7 +2,7 @@ const express = require('express')
 const axios=require('axios').default;
 const app = express()
 app.use(express.static('./'));
-const port = 3000
+const port = 3000;
 
 app.get('/wp-content/themes/greenEx/php/calc.php', (req, res) => {
 	console.log("QUERY: ", req.query);

@@ -14,18 +14,20 @@
 	
 	#mediabox{
 		width:100%;
-		height:100vh;
+		height:99.5vh;
 		background:yellow;
 		display:block;
 		position:relative;
+		overflow:hidden;
 	}
 	#navpanel{
 		width:100%;
 		height:50px;
-		background:red;
+		background:rgb(44,15,12);
 		display:grid;
 		grid-template-columns:1fr 50px;
 		align-self:center;
+		position:relative;
 	}
 	.nav{
 			jstify-self: center;
@@ -40,16 +42,11 @@
 	}
 	#container{
 		width:100%;
-		height:97%;
-		background:brown;
+		height:calc(100% - 50px);
+		background:blue;
 		display:grid;
 		grid-template-columns:50% 50%;
-		grid-template-rows: 50% 50%;
-	}
-	div{
-		order:1px solid green;
-		order-radius:10px;
-	}
+		grid-template-rows: 50% 50%;}
 	#chatbox{
 		background: black;
 		width:100%;
@@ -114,18 +111,28 @@
 		color:white;
 		padding-left:50px;
 	}
-	#remotecontainer,#localcontainer{
+	
+	#local.object,#remote.object{
 		border-radius:10px;
-		background:black;
+		object-fit:cover;
+		
 	}
-	#remote,#local{
+	#remote{
 		width:100%;
-		bckground:black;
+		height:100%;
+		background:gray;
 		border-radius:10px;
-		z-index:1;
+	
 	}
+	#local{
+		background:black;
+		width:100%;
+		height:100%;
+		
+	}
+	
 	#localcontainer{
-		psition:relative;
+		position:relative;
 	}
 	#localcontainer{
 	
@@ -133,7 +140,7 @@
 	 background-repeat: no-repeat;
 	 background-position: center;
 	 position:relative;
-	 z-index:100;
+	 z-idex:0;
  }
 	.ita{
 dsplay:block;
@@ -142,52 +149,268 @@ dsplay:block;
 	justify-self: center;
 	align-self:center;
 margin-right:10px;
+object-fit:cover;
 width:90%;
 }
 .ita svg{
-	height:90%;
-	width:50px;
+	
 }
 #settingspanel{
-	display:block;
+	display: none;
 	position:absolute;
-	right:-5px;
-	bottom:-46px;
+	right:0px;
+	top:51px;
 	width:50vw;
 	background:brown;
-	z-index:9999;
+	z-indx:999;
 	color:blue;
-	line-height:3;
-	padding-left:20px;
-	margin-right:0;
-	height:50px;
+	
+	
+	height: 0;
 	bodrer-bottom-right-radius:10px 10px;
 	border-bottom-left-radius: 10px 10px;
 	ont-size:1.5rem;
-	pading:5px;
+	
+}
+#settingspanel.open{
+	display:block;
+	z-index:999;
 }
 .settingspanel{
-	line-height:2;
+	width:50vw;
+	background:rgba(220,207,255,0.6);
+	line-height:1.2;
 	font-size:1.5rem;
-	color:orange;
+	padding:20px;
+	color:black;
+	border-radius:10px;
+	border:1px solid transparent;
+	z-index:999;
+}
+.settingspanel:hover{
+background:rgb(255,255,255);
+}
+.setimg{
+	width:80%;
+	padding-top:4px;
+}
+.nav b{
+	color:white;
+}
+#controlsContainer{
+	width:100%;
+	display: flex;
+				flex-wrap: wrap;
+    flex-direction: row;
+   
+    height:15%;
+    background:brown;
+    justify-content: flex-end;
+		align-items: center;
+		
+}
+#controlsContainer button{
+	margin-right:1vw;
+}
+.start {
+  font-size: 2vw;
+  border-radius: 10px;
+  height: 100%;
+  width: auto;
+  text-align: center;
+  color:white;
+  background:blue;
+}
+.stop {
+  font-size: 2vw;
+  border-radius: 10px;
+  background: linear-gradient(#c50000,#a10000 25%,#640000);
+  height: 100%;
+  width: auto;
+  text-align: center;
+  color:white;
+}
+.stop:hover {
+  background: linear-gradient(#c50000,#a10000 10%,#640000);
+}
+.next {
+  font-size: 2vw;
+  border-radius: 10px;
+ color:white;
+  height: 100%;
+  width: auto;
+  text-align: center;
+}
+section#mobileChat{
+	
+	display:none;
+	
+}
+#remote.natural, #local.natural{
+		
+		object-fit:contain;
+	}
+	#remote.fill, #local.fill{
+		
+		object-fit:fill;
+	}
+	#remote.paravilno, #local.pravilno{
+		width:100%;
+		height:100%;
+	}
+
+@media screen and (max-width: 452px) and (orientation: portrait){
+	
+	#container{
+		display:block;
+		height:calc(100% - 50px - 8%);
+		background:pink;
+		eight:84%;
+	}
+	#sectionChat{
+		display:none;
+	}
+	#localcontainer{
+		position:absolute;
+		top:50px;
+		left:0;
+		width:30%;
+		height:100px;
+		border:1px solid red;
+	}
+	#settingspanel,.settingspanel{
+		width:100%;
+	}
+	#remotecontainer{
+		height:100%;
+		position:relative;
+		background:red;
+	}
+	#remote{
+		height:100%;
+	
+		width:100%;
+	}
+	
+	
+	#controlsContainer{
+	height:8.5%;
+	background:black;
+	position:relative;
+	display:block;
+	}
+	#controlsContainer button{
+		font-size: 4vw;
+		padding-left:8vw;
+		padding-right:8vw;
+		margin-left: 1vw;
+		z-index:10;
+	}
+	.setimg{
+		width:50%;
+		margin-top:4px;
+		
+	}
+	section#mobileChat{
+		display:block;
+		position:absolute;
+		bottom:0px;
+		left:0;
+		width:100%;
+		height:60%;
+		background:orange;
+		border:1px solid green;
+		z-inex:1;
+		
+	}
+	#mobileChat.hide{
+		height:0%;
+	
+	}
+	#hidechat{
+		position:absolute;
+		ackground:red;
+		width:30px;
+		height:30px;
+		left:calc(50% - 15px);
+		mrgin-bottom:20px;
+		top:-30px;
+		object-fit:cover;
+		z-inex:9999;
+	}
+	.chaticon{
+	width:100%;
+	height:100%;
+}
+
+	#textarea2{
+			width:100%;
+		height: 20%;/*calc(100% - 85%);*/
+
+		background:pink;
+		border:1px solid green;
+		display:block;
+		position:absolute;
+		bottom:0%;
+		left:0;
+		border-radius:10px;
+	}
+	#txtvalue2{
+		width:100%;
+		height:99%;
+		bottom:0;
+	}
+	#chatbox2{
+		display:block;
+		overflow:scroll;
+		background:green;
+		height:95%;
+		border:1px solid brown;
+	}
+	.yourmsg2{
+		background:rgba(100,0,12,0.5);
+		color:white;
+		line-height:1.5;
+		padding:4px;
+		pdding-bottom:30px;
+		padding-left:30px;
+	}
 }
     </style>
     </head>
     <body>
 	
     <article id="mediabox">
-    <nav id="navpanel"><div class="nav"><b>Online: 1</b></div>
-    <div id="settings" class="ita" onclick="alert('yes');">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="orange" class="w-5 h-5">
-  <path fill-rule="evenodd" d="M4.25 2A2.25 2.25 0 002 4.25v2.5A2.25 2.25 0 004.25 9h2.5A2.25 2.25 0 009 6.75v-2.5A2.25 2.25 0 006.75 2h-2.5zm0 9A2.25 2.25 0 002 13.25v2.5A2.25 2.25 0 004.25 18h2.5A2.25 2.25 0 009 15.75v-2.5A2.25 2.25 0 006.75 11h-2.5zm9-9A2.25 2.25 0 0011 4.25v2.5A2.25 2.25 0 0013.25 9h2.5A2.25 2.25 0 0018 6.75v-2.5A2.25 2.25 0 0015.75 2h-2.5zm0 9A2.25 2.25 0 0011 13.25v2.5A2.25 2.25 0 0013.25 18h2.5A2.25 2.25 0 0018 15.75v-2.5A2.25 2.25 0 0015.75 11h-2.5z" clip-rule="evenodd" />
-</svg>
-<div id="settingspanel"><div class="settingspanel">В админку</div></div>
-</div></nav>
+    <nav id="navpanel"><div class="nav"><b>Online: <span>1</span></b></div>
+    <div id="settings" class="ita" onclick="panelOpen(this);">
+ <img class="setimg" src="set2.svg">
+</div>
+<div id="settingspanel">
+<div class="settingspanel">В админку</div>
+<div class="settingspanel">Переключить камеру</div>
+<div class="settingspanel">Скриншэринг</div>
+</div>
+</nav>
     <section id="container">
-    <div id="remotecontainer"><video id="remote"></video></div>
-<div id="localcontainer"><video id="local"></video></div></div>
-<div>three</div>
-<div>
+    <div id="remotecontainer"><video id="remote"  class="" autoplay muted></video>
+    
+ <section id="mobileChat" class="hide">
+		<div id="hidechat" onclick="hideChat(this);"><img class="chaticon" src="chat.svg"/></div>
+	<div id="chatbox2"></div>
+
+<div id="textarea2"><textarea id="txtvalue2" placeholder="Your message"></textarea>
+<div class="send" data-send="two" onclick="sendi(this);"><img src="send1.svg"/></div>
+
+</div>
+</section> 
+    </div>
+<div id="localcontainer"><video id="local"  class=""  autoplay muted></video></div>
+
+<div id="controlsContainer"><button id="startbtn" class="start" onclick="start(this);">start</button><button class="next" disabled>next</button>
+
+
+</div>
+<div id="sectionChat">
 <div id="chatbox">
 
 </div>
@@ -197,16 +420,287 @@ width:90%;
 </div>
     </section>
     </article>
+  <hr>
+  <h1>video mode</h1>
+  <div><button onclick="do1();">1</button>natural</div>
+  <div><button onclick="do2();">2</button>object-fill:cover</div>
+   <div><button onclick="do3();">3</button>object-fill:</div>
+    <div><button onclick="do4();">4</button>pravilno</div>
+  <hr>
     <script>
+		
+		var isOpen = false;
+		var mobChat = false;
+		var isCam = false;
+		
+		function panelOpen(el){
+			
+			var settingspanel = document.getElementById("settingspanel");
+			if(!isOpen){
+			settingspanel.className = "open";
+			isOpen = true;	
+			}else{
+				
+				settingspanel.className = "";
+				isOpen = false;
+			}
+		}
+		function do1(){
+			
+			remote.className="natural";
+			 local.className="natural";
+		}
+		function do2(){
+			console.log("object")
+			remote.className="object";
+			local.className="object";
+		}
+		
+		function do3(){
+			
+			remote.className="pravilno";
+			local.className="pravilno";
+		}
+		
+			function do4(){
+			
+			remote.className="fill";
+			local.className="fill";
+		}
+		
     function sendi(event){
 		 let l=event.getAttribute("data-send");
-		// alert(txtvalue.value)
+		
 		let div=document.createElement('div');
+		if(l=="one"){
 		div.className="yourmsg";
 		div.innerHTML="<span>"+ txtvalue.value+ "</span>";
 		chatbox.appendChild(div);
 		chatbox.scrollTop = chatbox.clientHeight + chatbox.scrollHeight;
+	}else if(l=="two"){
+		div.className="yourmsg2";
+		div.innerHTML="<span>"+ txtvalue2.value+ "</span>";
+		chatbox2.appendChild(div);
+		chatbox2.scrollTop = chatbox2.clientHeight + chatbox2.scrollHeight;
+	}
 		
 	}
+	function hideChat(el){
+		
+		if(!mobChat){
+		mobileChat.className="";
+		mobChat =  true;
+	}else{
+		mobileChat.className = "hide";
+		mobChat = false;
+	}
+	}
+	let localStream;
+	
+	let localVideo=document.getElementById("local");
+let remoteVideo=document.getElementById("remote");
+  		
+ async function start(el) {
+  console.log('Requesting local stream');
+  if(!isCam){
+  startbtn.disabled = true;
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({audio: true, video: true});
+    console.log('Received local stream');
+    localVideo.srcObject = stream;
+    localStream = stream;
+    startbtn.disabled = true;
+  } catch (e) {
+	  console.error(e);
+   // alert(`getUserMedia() error: ${e.name}`);
+  }
+}else{
+	console.log("stop it");
+	hangup();
+	isCam = false;
+	startbtn.textContent="start";
+}
+}
+	
+	
+	
+	localVideo.addEventListener('loadedmetadata', function() {
+		//alert("loaded")
+  console.log(`Local video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
+  call();
+  startbtn.disabled = false;
+  isCam = true;
+  startbtn.className="stop";
+  startbtn.textContent="stop";
+});
+
+remoteVideo.addEventListener('loadedmetadata', function() {
+  console.log(`Remote video videoWidth: ${this.videoWidth}px,  videoHeight: ${this.videoHeight}px`);
+});
+
+
+
+
+let pc1;
+let pc2;
+const offerOptions = {
+  offerToReceiveAudio: 1,
+  offerToReceiveVideo: 1
+};
+
+function getName(pc) {
+  return (pc === pc1) ? 'pc1' : 'pc2';
+}
+
+function getOtherPc(pc) {
+  return (pc === pc1) ? pc2 : pc1;
+}
+
+
+async function call() {
+ // callButton.disabled = true;
+  //hangupButton.disabled = false;
+  console.log('Starting call');
+  startTime = window.performance.now();
+  const videoTracks = localStream.getVideoTracks();
+  const audioTracks = localStream.getAudioTracks();
+  if (videoTracks.length > 0) {
+    console.log(`Using video device: ${videoTracks[0].label}`);
+  }
+  if (audioTracks.length > 0) {
+    console.log(`Using audio device: ${audioTracks[0].label}`);
+  }
+  const configuration = {};
+  console.log('RTCPeerConnection configuration:', configuration);
+  pc1 = new RTCPeerConnection(configuration);
+  console.log('Created local peer connection object pc1');
+  pc1.addEventListener('icecandidate', e => onIceCandidate(pc1, e));
+  pc2 = new RTCPeerConnection(configuration);
+  console.log('Created remote peer connection object pc2');
+  pc2.addEventListener('icecandidate', e => onIceCandidate(pc2, e));
+  pc1.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc1, e));
+  pc2.addEventListener('iceconnectionstatechange', e => onIceStateChange(pc2, e));
+  pc2.addEventListener('track', gotRemoteStream);
+
+  localStream.getTracks().forEach(track => pc1.addTrack(track, localStream));
+  console.log('Added local stream to pc1');
+
+  try {
+    console.log('pc1 createOffer start');
+    const offer = await pc1.createOffer(offerOptions);
+    await onCreateOfferSuccess(offer);
+  } catch (e) {
+    onCreateSessionDescriptionError(e);
+  }
+}
+
+function onCreateSessionDescriptionError(error) {
+  console.log(`Failed to create session description: ${error.toString()}`);
+}
+
+async function onCreateOfferSuccess(desc) {
+  console.log(`Offer from pc1\n${desc.sdp}`);
+  console.log('pc1 setLocalDescription start');
+  try {
+    await pc1.setLocalDescription(desc);
+    onSetLocalSuccess(pc1);
+  } catch (e) {
+    onSetSessionDescriptionError();
+  }
+
+  console.log('pc2 setRemoteDescription start');
+  try {
+    await pc2.setRemoteDescription(desc);
+    onSetRemoteSuccess(pc2);
+  } catch (e) {
+    onSetSessionDescriptionError();
+  }
+
+  console.log('pc2 createAnswer start');
+  // Since the 'remote' side has no media stream we need
+  // to pass in the right constraints in order for it to
+  // accept the incoming offer of audio and video.
+  try {
+    const answer = await pc2.createAnswer();
+    await onCreateAnswerSuccess(answer);
+  } catch (e) {
+    onCreateSessionDescriptionError(e);
+  }
+}
+
+function onSetLocalSuccess(pc) {
+  console.log(`${getName(pc)} setLocalDescription complete`);
+}
+
+function onSetRemoteSuccess(pc) {
+  console.log(`${getName(pc)} setRemoteDescription complete`);
+}
+
+function onSetSessionDescriptionError(error) {
+  console.log(`Failed to set session description: ${error.toString()}`);
+}
+
+function gotRemoteStream(e) {
+  if (remoteVideo.srcObject !== e.streams[0]) {
+    remoteVideo.srcObject = e.streams[0];
+    console.log('pc2 received remote stream');
+  }
+}
+
+async function onCreateAnswerSuccess(desc) {
+  console.log(`Answer from pc2:\n${desc.sdp}`);
+  console.log('pc2 setLocalDescription start');
+  try {
+    await pc2.setLocalDescription(desc);
+    onSetLocalSuccess(pc2);
+  } catch (e) {
+    onSetSessionDescriptionError(e);
+  }
+  console.log('pc1 setRemoteDescription start');
+  try {
+    await pc1.setRemoteDescription(desc);
+    onSetRemoteSuccess(pc1);
+  } catch (e) {
+    onSetSessionDescriptionError(e);
+  }
+}
+
+async function onIceCandidate(pc, event) {
+  try {
+    await (getOtherPc(pc).addIceCandidate(event.candidate));
+    onAddIceCandidateSuccess(pc);
+  } catch (e) {
+    onAddIceCandidateError(pc, e);
+  }
+  console.log(`${getName(pc)} ICE candidate:\n${event.candidate ? event.candidate.candidate : '(null)'}`);
+}
+
+function onAddIceCandidateSuccess(pc) {
+  console.log(`${getName(pc)} addIceCandidate success`);
+}
+
+function onAddIceCandidateError(pc, error) {
+  console.log(`${getName(pc)} failed to add ICE Candidate: ${error.toString()}`);
+}
+
+function onIceStateChange(pc, event) {
+  if (pc) {
+    console.log(`${getName(pc)} ICE state: ${pc.iceConnectionState}`);
+    console.log('ICE state change event: ', event);
+  }
+}
+
+function hangup() {
+  console.log('Ending call');
+  pc1.close();
+  pc2.close();
+  pc1 = null;
+  pc2 = null;
+  startbtn.className="stop";
+ // hangupButton.disabled = true;
+ // callButton.disabled = false;
+}
+
     </script>
+      
     </body></html>
