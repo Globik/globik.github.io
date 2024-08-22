@@ -36,6 +36,41 @@ let b = c.reduce(function(ac, v){
 console.log("total sum: ", b.toFixed(2))
 let da = "504.10";
 console.log("da: ", Number(parseFloat(da).toFixed(2)))
+/*
+if(k<=-128*1){
+		futs[0].style.left=`${128*6+k}px`;
+	}
+	
+	if(k<=-128*2){
+		futs[1].style.left=`${128*7+k}px`;
+	}
+	if(k<=-128*3){
+		futs[2].style.left=`${128*8+k}px`;
+	}
+	if(k<=-128*4){
+		futs[3].style.left=`${128*9+k}px`;
+	}
+	if(k<=-128*5){
+		futs[4].style.left=`${128*10+k}px`;
+	}
+	if(k<=-128*6){
+		futs[5].style.left=`${128*11+k}px`;
+	}
+	*/
+var arrp=[0,1,2,3,4,5]
+let stri='';
+let k=0;
+arrp.forEach(function(el,i, arr){
+	stri+=`if(k<=-128*(i+1){
+	arr[i].style.left=\`\${128*(arrp.length+i)+k}px\`
+	}`
+})
+
+console.log('stri: ', stri)
+
+
+
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
