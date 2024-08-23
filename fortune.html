@@ -83,10 +83,23 @@
                 'innerRadius'     : 75,         // Make wheel hollow so segments don't go all way to center.
                 'textFontSize'    : 24,         // Set default font size for the segments.
                 'textOrientation' : 'vertical', // Make text vertial so goes down from the outside of wheel.
-                'textAlignment'   : 'outer',    // Align text to outside of wheel.
-                'numSegments'     : 24,         // Specify number of segments.
+                'textAlignment'   : 'outer',  
+                'drawMode':'segmentImage' , // Align text to outside of wheel.
+                'numSegments'     : 10,         // Specify number of segments.
                 'segments'        :             // Define segments including colour and text.
-                [                               // font size and test colour overridden on backrupt segments.
+                [  {'image':'public/segments/discount_50.png'},
+                {'image':'public/segments/discount_100.png'},
+                {'image':'public/segments/free_withdraw.png'},
+                {'image':'public/segments/invoice_cashback_20.png'},
+                {'image':'public/segments/point.png'},
+                {'image':'public/segments/vip.png'},
+                {'image':'public/segments/x3_chance.png'},
+                {'image':'public/segments/x3_chance.png'},
+                {'image':'public/segments/x3_chance.png'},
+                {'image':'public/segments/x3_chance.png'}
+                
+                
+                /*                             // font size and test colour overridden on backrupt segments.
                    {'fillStyle' : '#ee1c24', 'text' : '300'},
                    {'fillStyle' : '#3cb878', 'text' : '450'},
                    {'fillStyle' : '#f6989d', 'text' : '600'},
@@ -111,7 +124,7 @@
                    {'fillStyle' : '#fff200', 'text' : '700'},
                    {'fillStyle' : '#00aef0', 'text' : '800'},
                    {'fillStyle' : '#ffffff', 'text' : 'LOOSE TURN', 'textFontSize' : 12}
-                ],
+               */ ],
                 'animation' :           // Specify the animation to use.
                 {
                     'type'     : 'spinToStop',
