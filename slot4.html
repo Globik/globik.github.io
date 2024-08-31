@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CSS 3D Slot machine</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <meta name="viewport" content="initial-scale=0.60, minimum-scale=0.60, maximum-scale=0.60">
+        <style type="text/css">
+            body {
+                font-family: 'Roboto Condensed', sans-serif;
+                font-size: 12px;
+            }
+
+            #stage {
+                margin: 150px;
+                -webkit-perspective: 600;
+                  margin: 150px;
+                
+                display: inline-block;
+                /* Ensure that we're in 3D space */
+                transform-style: preserve-3d;
+            }
+
+            .ring {
+                float: left;
+                margin: 0 auto;
+                height: 100px;
+                width: 100px;
+                transform-style: preserve-3d;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+                padding: 15px;
+            }
+
+            .ring > :nth-child(odd) {
+                background-color: #445d71;
+            }
+
+            .ring > :nth-child(even) {
+                background-color: #406983;
+            }
+
+            .face {
+                position: absolute;
+                width: 100px;
+                height: 100px;
+                /*opacity: 0.7;*/
+                color: #ffffff; /*rgba(0,0,0,0.9);*/
+                border-radius: 10px;
+                backface-visibility: hidden;
+            }
+
+            .face > p {
+                font-family: 'Roboto Condensed', sans-serif;
+                font-size: 36px;
+                font-weight: bold;
+                text-align: center;
+                margin-top: 28px;
+            }
+
+            .numberInput{
+                dsplay: none;
+            }
+
+        </style>
+
+        <script type="text/javascript">
+
+            var FACES_PER_RING = 12;
+            var RING_RADIUS = 200;
+            var FACE_ANGLE = 360 / FACES_PER_RING;
+
+            function setup_faces (row)
+            {
+                for (var i = 0; i < FACES_PER_RING; i ++) {
+                    var face = document.createElement('div');
+                    face.className = 'face';
+                    // compute and assign the transform for this face
+                    var transform = 'rotateX(' + getDefaultRotation(i) + 'deg) translateZ(' + RING_RADIUS + 'px)';
+                    face.style.transform = transform;
+                    // setup the number to show inside the face
+                    var content = face.appendChild(document.createElement('p'));
+                    content.textContent = i;
+                    // add the face to the row
+                    row.appendChild(face);
+                }
+            }
+
+            function getDefaultRotation(index) {
+                return FACE_ANGLE * index;
+            }
+
+            var styleElement;
+            function updateDynamicCss(css){
+                if (!styleElement){                
+                    var head = document.head || document.getElementsByTagName('head')[0],
+                        styleElement = document.createElement('style');
+
+                    head.appendChild(styleElement);
+                }
+
+                styleElement.type = 'text/css';
+                if (styleElement.styleSheet){
+                    styleElement.styleSheet.cssText = css;
+                } else {
+                    styleElement.innerHTML = css;
+                }
+            }
+
+            var timeRun = 0;
+            var defaultAnimationStuff = 'animation-duration: 5s; animation-iteration-count: 1; animation-fill-mode: forwards; animation-timing-function: ease-in-out;';
+
+            var currentState = [0,0,0];
+
+            function init ()
+            {
+                setup_faces(document.getElementById('ring-1'));
+                setup_faces(document.getElementById('ring-2'));
+                setup_faces(document.getElementById('ring-3'));
+
+                document.querySelector('.startSpinn').addEventListener('click', function(){
+                    var cssStr = [];
+
+                    var i = 4;
+                    while(--i) {
+                        var input = document.getElementById('input'+i);
+
+                        var num = Number(input.value) || 0;
+                        var nextState = num = (0 - getDefaultRotation(num));    
+                        num -= (5 * 360);                       
+
+                        cssStr.push('@keyframes ringAnimation' + i + '' + timeRun + ' { 0% { transform: rotateX(' + currentState[i] + 'deg); } 100% { transform: rotateX(' + num + 'deg); }}');
+
+                        var ring = document.getElementById('ring-' + i);                  
+                        ring.setAttribute('style', 'transform: rotateX(' + currentState[i] + 'deg);'); 
+
+                        currentState[i] = nextState;
+                    }
+
+                    updateDynamicCss(cssStr.join(''));
+
+                    i = 4;
+                    while(--i){                  
+                        window.setTimeout(function(i, timeRun){ 
+                            return function() {
+                                document.getElementById('ring-' + i).setAttribute('style', 'animation-name: ringAnimation' + i + '' + timeRun +';' + defaultAnimationStuff); 
+                            }
+                        }(i, timeRun), 50 + (Math.random() * /*750*/1000));
+                    }
+
+                    timeRun+=1;
+                });
+            }
+
+            // call init once the document is fully loaded
+            window.addEventListener('load', init, false);
+        </script>
+    </head>
+
+    <body>
+		
+        <div id="stage">
+            <div id="ring-1" class="ring"></div>
+            <div id="ring-2" class="ring"></div>
+            <div id="ring-3" class="ring"></div>
+        </div>
+
+        <div>
+            <input type="number" id="input1" class="numberInput">        
+            <input type="number" id="input2" class="numberInput">
+            <input type="number" id="input3" class="numberInput">
+        </div>
+
+        <input type="button" class="startSpinn" value="Start">
+       <br> <a href="https://mamboleoo.be/articles/how-to-render-3d-in-2d-canvas">https://mamboleoo.be/articles/how-to-render-3d-in-2d-canvas</a>
+    </body>
+
+</html>
