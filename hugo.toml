@@ -1,0 +1,4 @@
+baseURL = 'https://webikor.ru/'
+languageCode = 'ru-ru'
+title = 'Мой сайт'
+theme = 'ananke'
