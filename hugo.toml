@@ -3,6 +3,11 @@ languageCode = 'ru-ru'
 title = 'Мой сайт'
 theme = 'ananke'
 
+[pagination]
+pagerSize = 3 # this is set low for demonstrating with dummy content. Set to a higher number
+
+
+
 [services.disqus]
   shortname = 'webikor'
 

@@ -3,7 +3,7 @@ baseURL = "https://gohugo-theme-ananke.pages.dev"
 theme = ["github.com/theNewDynamic/gohugo-theme-ananke/v2"]
 resourceDir = "../resources"
 
-defaultContentLanguage = "en"
+defaultContentLanguage = "ru"
 sectionPagesMenu = "main"
 enableRobotsTXT = true
 
@@ -82,7 +82,7 @@ profile = "https://en.wikipedia.org/wiki/%s"
 icon = "wikipedia-w"
 
 [services.disqus]
-  shortname = 'Globik'
+  shortname = 'webikor'
 
 [params]
-  commentoEnable = true
+  commentoEnable = false

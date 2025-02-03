@@ -1,7 +1,7 @@
 +++
 date = '2025-02-04T01:57:54+05:00'
-draft = true
-title = 'Comments Policy'
+draft = false
+title = 'Политика комментариев'
 +++
 
 
