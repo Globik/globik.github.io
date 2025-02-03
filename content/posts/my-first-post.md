@@ -9,3 +9,5 @@ title = 'My First'
 This is **bold** text, ttik and this is *emphasized* text.
 
 Visit the [Hugo](https://gohugo.io) website!
+
+{{Globik}}
