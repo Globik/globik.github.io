@@ -4,7 +4,7 @@ title = 'Мой сайт'
 theme = 'ananke'
 
 [services.disqus]
-  shortname = 'Globik'
+  shortname = 'webikor'
 
 [params]
   commentoEnable = false
