@@ -1,6 +1,6 @@
 ---
 title: 'of us'
-draft: true
+draft: false
 description: 'dwescriptor'
 type: 'pages'
 ---
