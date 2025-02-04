@@ -1,6 +1,6 @@
 title = "Notre-Dame de Paris"
-baseURL = "https://gohugo-theme-ananke.pages.dev"
-theme = ["github.com/theNewDynamic/gohugo-theme-ananke/v2"]
+baseURL = "https://webikor.ru"
+theme = "ananke"
 resourceDir = "../resources"
 
 defaultContentLanguage = "ru"
@@ -13,11 +13,11 @@ id = ''
 [pagination]
 pagerSize = 3 # this is set low for demonstrating with dummy content. Set to a higher number
 
-[languages.en]
-contentDir = "content/en"
-languageCode = 'en-EN'
+[languages.ru]
+contentDir = "content/ru"
+languageCode = 'ru-RU'
 weight = 1
-title = "Ananke"
+title = "webikor"
 # languageDirection = 'rtl' for Right-To-Left languages
 
 [languages.fr]
@@ -81,8 +81,5 @@ color = "#0645ad"
 profile = "https://en.wikipedia.org/wiki/%s"
 icon = "wikipedia-w"
 
-[services.disqus]
-  shortname = 'webikor'
 
-[params]
-  commentoEnable = false
+

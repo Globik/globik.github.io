@@ -1,11 +1,16 @@
 baseURL = 'https://webikor.ru/'
-languageCode = 'ru-ru'
-title = 'Мой сайт'
+languageCode = 'ru-RU'
+title = 'Webikor'
 theme = 'ananke'
 
 [pagination]
 pagerSize = 3 # this is set low for demonstrating with dummy content. Set to a higher number
 
+
+[[menu.main]]
+	name = 'О сайте'
+	url = '/about/'
+	weight = 1
 
 
 [services.disqus]

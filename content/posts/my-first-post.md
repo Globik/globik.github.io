@@ -2,6 +2,7 @@
 date = '2025-02-03T21:13:46+05:00'
 draft = false
 title = 'My First'
+type = 'posts'
 +++
 
 ## Introduction
