@@ -20,6 +20,7 @@ pagerSize = 3 # this is set low for demonstrating with dummy content. Set to a h
   commentoEnable = false
 	text_color = ""
 	author = ""
+	read_more_copy = "Далее"
 	favicon = "/images/favicon.ico"
 	ogImage = "/images/webikor.png"
 	site_logo = ""
