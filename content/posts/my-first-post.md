@@ -1,14 +1,9 @@
 +++
-date = '2025-02-03T21:13:46+05:00'
+date = '2025-02-04T16:00:28+05:00'
 draft = false
-title = 'My First'
-type = 'posts'
+title = 'My First Post'
 +++
 
-## Introduction
+## introduction
 
-This is **bold** text, ttik and this is *emphasized* text.
-
-Visit the [Hugo](https://gohugo.io) website!
-
-{{Globik}}
+njnajnj njanijnj
