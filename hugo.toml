@@ -21,6 +21,6 @@ pagerSize = 3 # this is set low for demonstrating with dummy content. Set to a h
 	text_color = ""
 	author = ""
 	favicon = "/images/favicon.ico"
-	ogImage = "images/webikor.png"
+	ogImage = "/images/webikor.png"
 	site_logo = ""
 	description = "Добро пожаловать в **Webikor** — блог, где код оживает, а технологии становятся понятными! Мы рассказываем и показываем, как создаются современные веб-приложения с использованием WebRTC"
