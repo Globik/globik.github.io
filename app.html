@@ -1,3 +1,244 @@
+Создание браузерной онлайн-игры в **пятикарточный дро-покер** с использованием **JavaScript** и **CSS 3D** — это довольно сложная задача, особенно если учитывать многопользовательский режим (6 игроков). Однако я могу предложить упрощенную версию игры, которая будет работать в браузере и включать:
+
+1. **Перемешивание колоды**.
+2. **Раздачу карт 6 игрокам**.
+3. **Отображение карт в 3D-стиле с использованием CSS**.
+4. **Возможность обмена картами**.
+
+Это будет однопользовательская версия (без сетевого взаимодействия), но с базовой логикой игры.
+
+---
+
+### Код игры:
+
+#### 1. **HTML**:
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Дро-покер</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="game-container">
+    <h1>Пятикарточный дро-покер</h1>
+    <div class="deck"></div>
+    <div class="players">
+      <div class="player" id="player1">
+        <h2>Игрок 1</h2>
+        <div class="hand"></div>
+        <button class="draw-button">Обменять карты</button>
+      </div>
+      <!-- Добавьте еще 5 игроков аналогично -->
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+```
+
+---
+
+#### 2. **CSS (styles.css)**:
+```css
+body {
+  font-family: Arial, sans-serif;
+  background-color: green;
+  color: white;
+  text-align: center;
+}
+
+.game-container {
+  margin: 20px;
+}
+
+.deck {
+  margin-bottom: 20px;
+}
+
+.players {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.player {
+  margin: 10px;
+  padding: 10px;
+  border: 2px solid white;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.hand {
+  display: flex;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.card {
+  width: 100px;
+  height: 150px;
+  margin: 5px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.6s;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card-front {
+  background-color: white;
+  color: black;
+  transform: rotateY(180deg);
+}
+
+.card-back {
+  background-color: blue;
+  color: white;
+}
+
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+```
+
+---
+
+#### 3. **JavaScript (script.js)**:
+```javascript
+// Создаем колоду из 52 карт
+const suits = ["♠", "♥", "♦", "♣"];
+const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+let deck = [];
+
+for (let suit of suits) {
+  for (let rank of ranks) {
+    deck.push({ rank, suit });
+  }
+}
+
+// Перемешиваем колоду
+function shuffleDeck() {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+}
+
+// Раздаем карты игрокам
+function dealCards() {
+  const players = document.querySelectorAll(".player");
+  players.forEach(player => {
+    const hand = player.querySelector(".hand");
+    hand.innerHTML = ""; // Очищаем руку
+    for (let i = 0; i < 5; i++) {
+      const card = deck.pop();
+      const cardElement = document.createElement("div");
+      cardElement.classList.add("card");
+      cardElement.innerHTML = `
+        <div class="card-inner">
+          <div class="card-face card-front">${card.rank}${card.suit}</div>
+          <div class="card-face card-back"></div>
+        </div>
+      `;
+      cardElement.addEventListener("click", () => {
+        cardElement.classList.toggle("flipped");
+      });
+      hand.appendChild(cardElement);
+    }
+  });
+}
+
+// Обмен карт
+function drawCards(player) {
+  const hand = player.querySelector(".hand");
+  const cards = hand.querySelectorAll(".card");
+  cards.forEach(card => {
+    if (card.classList.contains("flipped")) {
+      const newCard = deck.pop();
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="card-face card-front">${newCard.rank}${newCard.suit}</div>
+          <div class="card-face card-back"></div>
+        </div>
+      `;
+      card.classList.remove("flipped");
+    }
+  });
+}
+
+// Инициализация игры
+function initGame() {
+  shuffleDeck();
+  dealCards();
+
+  const drawButtons = document.querySelectorAll(".draw-button");
+  drawButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const player = button.closest(".player");
+      drawCards(player);
+    });
+  });
+}
+
+// Запуск игры
+initGame();
+```
+
+---
+
+### Как это работает:
+1. **Колода**:
+   - Создается колода из 52 карт.
+   - Колода перемешивается с помощью алгоритма Фишера-Йетса.
+
+2. **Раздача карт**:
+   - Каждому игроку раздается по 5 карт.
+   - Карты отображаются в 3D-стиле с использованием CSS.
+
+3. **Обмен карт**:
+   - Игрок может кликнуть на карту, чтобы "перевернуть" ее (выбрать для обмена).
+   - После нажатия кнопки "Обменять карты" выбранные карты заменяются на новые из колоды.
+
+4. **3D-эффект**:
+   - Карты переворачиваются с анимацией, созданной с помощью CSS `transform` и `perspective`.
+
+---
+
+### Что можно улучшить:
+- Добавить логику определения победителя (оценка комбинаций).
+- Реализовать многопользовательский режим с использованием WebSocket.
+- Добавить больше анимаций и улучшить дизайн.
+
+Запустите этот код в браузере, и вы получите базовую версию игры в дро-покер! 🃏
 **Double SHA-256** — это криптографическая функция, которая применяет алгоритм SHA-256 дважды к входным данным. Этот метод часто используется в блокчейн-технологиях (например, в Bitcoin) для повышения безопасности и защиты от определенных типов атак.
 
 ---
