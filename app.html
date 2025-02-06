@@ -1,3 +1,192 @@
+
+Конечно! Добавим логику определения победителя в игре **пятикарточный дро-покер**. Для этого нужно реализовать функцию, которая будет оценивать комбинации карт у каждого игрока и определять, у кого самая сильная рука.
+
+---
+
+### Обновленный код:
+
+#### 1. **JavaScript (script.js)**:
+Добавим функцию `evaluateHand`, которая будет оценивать комбинации карт, и функцию `determineWinner`, которая сравнит руки всех игроков и определит победителя.
+
+```javascript
+// Создаем колоду из 52 карт
+const suits = ["♠", "♥", "♦", "♣"];
+const ranks = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
+let deck = [];
+
+for (let suit of suits) {
+  for (let rank of ranks) {
+    deck.push({ rank, suit });
+  }
+}
+
+// Перемешиваем колоду
+function shuffleDeck() {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+}
+
+// Раздаем карты игрокам
+function dealCards() {
+  const players = document.querySelectorAll(".player");
+  players.forEach(player => {
+    const hand = player.querySelector(".hand");
+    hand.innerHTML = ""; // Очищаем руку
+    for (let i = 0; i < 5; i++) {
+      const card = deck.pop();
+      const cardElement = document.createElement("div");
+      cardElement.classList.add("card");
+      cardElement.innerHTML = `
+        <div class="card-inner">
+          <div class="card-face card-front">${card.rank}${card.suit}</div>
+          <div class="card-face card-back"></div>
+        </div>
+      `;
+      cardElement.addEventListener("click", () => {
+        cardElement.classList.toggle("flipped");
+      });
+      hand.appendChild(cardElement);
+    }
+  });
+}
+
+// Обмен карт
+function drawCards(player) {
+  const hand = player.querySelector(".hand");
+  const cards = hand.querySelectorAll(".card");
+  cards.forEach(card => {
+    if (card.classList.contains("flipped")) {
+      const newCard = deck.pop();
+      card.innerHTML = `
+        <div class="card-inner">
+          <div class="card-face card-front">${newCard.rank}${newCard.suit}</div>
+          <div class="card-face card-back"></div>
+        </div>
+      `;
+      card.classList.remove("flipped");
+    }
+  });
+}
+
+// Оценка комбинации карт
+function evaluateHand(cards) {
+  const ranksCount = {};
+  const suitsCount = {};
+  const rankValues = { "2": 2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 11, "Q": 12, "K": 13, "A": 14 };
+
+  // Подсчитываем количество карт каждого достоинства и масти
+  cards.forEach(card => {
+    const rank = card.rank;
+    const suit = card.suit;
+    ranksCount[rank] = (ranksCount[rank] || 0) + 1;
+    suitsCount[suit] = (suitsCount[suit] || 0) + 1;
+  });
+
+  // Проверяем комбинации
+  const isFlush = Object.values(suitsCount).some(count => count === 5);
+  const isStraight = checkStraight(Object.keys(ranksCount).map(rank => rankValues[rank]));
+
+  if (isStraight && isFlush && ranksCount["A"]) return { strength: 9, name: "Роял-флэш" };
+  if (isStraight && isFlush) return { strength: 8, name: "Стрит-флэш" };
+  if (Object.values(ranksCount).includes(4)) return { strength: 7, name: "Каре" };
+  if (Object.values(ranksCount).includes(3) && Object.values(ranksCount).includes(2)) return { strength: 6, name: "Фулл-хаус" };
+  if (isFlush) return { strength: 5, name: "Флэш" };
+  if (isStraight) return { strength: 4, name: "Стрит" };
+  if (Object.values(ranksCount).includes(3)) return { strength: 3, name: "Тройка" };
+  if (Object.values(ranksCount).filter(count => count === 2).length === 2) return { strength: 2, name: "Две пары" };
+  if (Object.values(ranksCount).includes(2)) return { strength: 1, name: "Пара" };
+  return { strength: 0, name: "Старшая карта" };
+}
+
+// Проверка на стрит
+function checkStraight(values) {
+  values = [...new Set(values)].sort((a, b) => a - b);
+  if (values.length < 5) return false;
+  for (let i = 0; i <= values.length - 5; i++) {
+    if (values[i + 4] - values[i] === 4) return true;
+  }
+  return false;
+}
+
+// Определение победителя
+function determineWinner() {
+  const players = document.querySelectorAll(".player");
+  let bestHand = { strength: -1, player: null, name: "" };
+
+  players.forEach((player, index) => {
+    const cards = Array.from(player.querySelectorAll(".card-front")).map(card => {
+      const text = card.textContent;
+      return { rank: text.slice(0, -1), suit: text.slice(-1) };
+    });
+    const hand = evaluateHand(cards);
+    if (hand.strength > bestHand.strength) {
+      bestHand = { strength: hand.strength, player: index + 1, name: hand.name };
+    }
+  });
+
+  alert(`Победил Игрок ${bestHand.player} с комбинацией: ${bestHand.name}`);
+}
+
+// Инициализация игры
+function initGame() {
+  shuffleDeck();
+  dealCards();
+
+  const drawButtons = document.querySelectorAll(".draw-button");
+  drawButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      const player = button.closest(".player");
+      drawCards(player);
+    });
+  });
+
+  const showWinnerButton = document.createElement("button");
+  showWinnerButton.textContent = "Определить победителя";
+  showWinnerButton.addEventListener("click", determineWinner);
+  document.body.appendChild(showWinnerButton);
+}
+
+// Запуск игры
+initGame();
+```
+
+---
+
+### Что изменилось:
+1. **Функция `evaluateHand`**:
+   - Оценивает комбинации карт (пара, две пары, тройка, стрит, флэш и т.д.).
+   - Возвращает объект с силой комбинации (`strength`) и ее названием (`name`).
+
+2. **Функция `checkStraight`**:
+   - Проверяет, есть ли у игрока стрит (последовательность из 5 карт).
+
+3. **Функция `determineWinner`**:
+   - Сравнивает руки всех игроков и определяет победителя.
+   - Выводит результат в виде сообщения.
+
+4. **Кнопка "Определить победителя"**:
+   - Добавлена кнопка, которая запускает определение победителя.
+
+---
+
+### Как это работает:
+1. После раздачи карт и обмена игроки нажимают кнопку **"Определить победителя"**.
+2. Программа оценивает комбинации карт у каждого игрока.
+3. Выводится сообщение с номером игрока и его комбинацией.
+
+---
+
+### Пример вывода:
+- Если у Игрока 1 комбинация **Фулл-хаус**, а у остальных игроков комбинации слабее, программа выведет:
+  ```
+  Победил Игрок 1 с комбинацией: Фулл-хаус
+  ```
+
+---
+
+Теперь ваша игра в дро-покер стала еще интереснее! 🃏
 Создание браузерной онлайн-игры в **пятикарточный дро-покер** с использованием **JavaScript** и **CSS 3D** — это довольно сложная задача, особенно если учитывать многопользовательский режим (6 игроков). Однако я могу предложить упрощенную версию игры, которая будет работать в браузере и включать:
 
 1. **Перемешивание колоды**.
