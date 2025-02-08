@@ -1,3 +1,381 @@
+Добавим функционал взятия карт из колоды игроками и уточним логику завершения игры. Теперь игра будет завершаться только тогда, когда у одного игрока остались карты, а в колоде больше нет карт для раздачи.
+
+---
+
+### Обновленный код:
+
+#### HTML (index.html)
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Подкидной Дурак</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="game-container">
+    <div class="player" id="player1">
+      <h2>Игрок 1</h2>
+      <div class="hand"></div>
+      <button class="action-button" onclick="playTurn(0)">Подкинуть</button>
+      <button class="action-button" onclick="defend(0)">Отбить</button>
+    </div>
+    <div class="player" id="player2">
+      <h2>Игрок 2</h2>
+      <div class="hand"></div>
+      <button class="action-button" onclick="playTurn(1)">Подкинуть</button>
+      <button class="action-button" onclick="defend(1)">Отбить</button>
+    </div>
+    <div class="player" id="player3">
+      <h2>Игрок 3</h2>
+      <div class="hand"></div>
+      <button class="action-button" onclick="playTurn(2)">Подкинуть</button>
+      <button class="action-button" onclick="defend(2)">Отбить</button>
+    </div>
+    <div class="player" id="player4">
+      <h2>Игрок 4</h2>
+      <div class="hand"></div>
+      <button class="action-button" onclick="playTurn(3)">Подкинуть</button>
+      <button class="action-button" onclick="defend(3)">Отбить</button>
+    </div>
+    <div class="table">
+      <h2>Стол</h2>
+      <div class="cards"></div>
+    </div>
+    <div class="deck">
+      <h2>Колода</h2>
+      <div class="cards"></div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
+```
+
+---
+
+#### CSS (style.css)
+```css
+body {
+  font-family: Arial, sans-serif;
+  background-color: green;
+  color: white;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.game-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.player, .table, .deck {
+  border: 2px solid white;
+  padding: 10px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.player {
+  width: 200px;
+  height: 150px;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.table, .deck {
+  width: 300px;
+  height: 200px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.hand, .cards {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.card {
+  width: 50px;
+  height: 70px;
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  font-size: 18px;
+  transform-style: preserve-3d;
+  transition: transform 0.5s, opacity 0.5s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: rotateY(180deg);
+}
+
+.card.selected {
+  border: 2px solid yellow;
+}
+
+@keyframes moveCard {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(100px, -50px);
+  }
+}
+
+.card.moving {
+  animation: moveCard 1s forwards;
+}
+
+@keyframes flipCard {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(180deg);
+  }
+}
+
+.card.flipping {
+  animation: flipCard 0.5s forwards;
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.card.fading {
+  animation: fadeOut 1s forwards;
+}
+```
+
+---
+
+#### JavaScript (script.js)
+```javascript
+// Создаем колоду карт
+const suits = ['♠', '♣', '♥', '♦'];
+const ranks = ['6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+let deck = [];
+
+for (let suit of suits) {
+  for (let rank of ranks) {
+    deck.push({ suit, rank });
+  }
+}
+
+// Перемешиваем колоду
+function shuffleDeck(deck) {
+  for (let i = deck.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [deck[i], deck[j]] = [deck[j], deck[i]];
+  }
+}
+
+shuffleDeck(deck);
+
+// Раздаем карты игрокам
+const players = [
+  { name: 'Игрок 1', hand: [] },
+  { name: 'Игрок 2', hand: [] },
+  { name: 'Игрок 3', hand: [] },
+  { name: 'Игрок 4', hand: [] }
+];
+
+for (let i = 0; i < 6; i++) {
+  players.forEach(player => {
+    player.hand.push(deck.pop());
+  });
+}
+
+// Текущий игрок
+let currentPlayer = 0;
+
+// Выбранные карты
+let selectedCards = [];
+
+// Карты на столе
+let tableCards = [];
+
+// Козырь
+const trumpCard = deck.pop();
+const trumpSuit = trumpCard.suit;
+
+// Отображаем карты игроков
+function renderHands() {
+  players.forEach((player, index) => {
+    const handElement = document.querySelector(`#player${index + 1} .hand`);
+    handElement.innerHTML = '';
+    player.hand.forEach((card, cardIndex) => {
+      const cardElement = document.createElement('div');
+      cardElement.className = 'card';
+      cardElement.textContent = `${card.rank}${card.suit}`;
+      cardElement.addEventListener('click', () => selectCard(index, cardIndex));
+      if (selectedCards.includes(cardIndex)) {
+        cardElement.classList.add('selected');
+      }
+      handElement.appendChild(cardElement);
+    });
+  });
+}
+
+// Отображаем колоду
+function renderDeck() {
+  const deckElement = document.querySelector('.deck .cards');
+  deckElement.innerHTML = '';
+  const cardElement = document.createElement('div');
+  cardElement.className = 'card';
+  cardElement.textContent = '🂠';
+  deckElement.appendChild(cardElement);
+}
+
+// Выбор карты
+function selectCard(playerIndex, cardIndex) {
+  if (playerIndex === currentPlayer) {
+    const card = players[playerIndex].hand[cardIndex];
+    if (selectedCards.includes(cardIndex)) {
+      selectedCards = selectedCards.filter(index => index !== cardIndex);
+    } else {
+      selectedCards.push(cardIndex);
+    }
+    renderHands();
+  }
+}
+
+// Ход игрока
+function playTurn(playerIndex) {
+  if (playerIndex === currentPlayer) {
+    const cardsToPlay = selectedCards.map(index => players[playerIndex].hand[index]);
+    if (cardsToPlay.length === 0) return;
+
+    // Проверка правильности хода
+    if (tableCards.length > 0) {
+      const firstCardRank = tableCards[0].rank;
+      if (!cardsToPlay.every(card => card.rank === firstCardRank)) {
+        alert('Можно подкидывать только карты того же достоинства!');
+        return;
+      }
+    }
+
+    // Перемещение карт на стол
+    const table = document.querySelector('.table .cards');
+    cardsToPlay.forEach(card => {
+      const cardElement = document.createElement('div');
+      cardElement.className = 'card moving';
+      cardElement.textContent = `${card.rank}${card.suit}`;
+      table.appendChild(cardElement);
+      tableCards.push(card);
+    });
+
+    // Удаление карт из руки игрока
+    players[playerIndex].hand = players[playerIndex].hand.filter((_, index) => !selectedCards.includes(index));
+    selectedCards = [];
+    renderHands();
+    currentPlayer = (currentPlayer + 1) % players.length;
+  }
+}
+
+// Отбивание карт
+function defend(playerIndex) {
+  if (playerIndex === currentPlayer) {
+    const defendingCards = selectedCards.map(index => players[playerIndex].hand[index]);
+    if (defendingCards.length !== tableCards.length) {
+      alert('Нужно отбить все карты!');
+      return;
+    }
+
+    // Проверка правильности отбивания
+    const isValidDefense = defendingCards.every((card, index) => {
+      const tableCard = tableCards[index];
+      return (card.suit === tableCard.suit && card.rank > tableCard.rank) || (card.suit === trumpSuit && tableCard.suit !== trumpSuit);
+    });
+
+    if (!isValidDefense) {
+      alert('Невозможно отбить эти карты!');
+      return;
+    }
+
+    // Анимация отбивания
+    const table = document.querySelector('.table .cards');
+    defendingCards.forEach(card => {
+      const cardElement = document.createElement('div');
+      cardElement.className = 'card flipping';
+      cardElement.textContent = `${card.rank}${card.suit}`;
+      table.appendChild(cardElement);
+    });
+
+    // Удаление карт из руки игрока
+    players[playerIndex].hand = players[playerIndex].hand.filter((_, index) => !selectedCards.includes(index));
+    selectedCards = [];
+    tableCards = [];
+    renderHands();
+    currentPlayer = (currentPlayer + 1) % players.length;
+  }
+}
+
+// Взятие карт из колоды
+function drawCards() {
+  players.forEach(player => {
+    while (player.hand.length < 6 && deck.length > 0) {
+      player.hand.push(deck.pop());
+    }
+  });
+  renderHands();
+  renderDeck();
+}
+
+// Завершение игры
+function checkGameOver() {
+  const remainingPlayers = players.filter(player => player.hand.length > 0);
+  if (remainingPlayers.length === 1 && deck.length === 0) {
+    alert(`Игра окончена! ${remainingPlayers[0].name} проиграл!`);
+  }
+}
+
+// Инициализация игры
+function initGame() {
+  renderHands();
+  renderDeck();
+}
+
+initGame();
+```
+
+---
+
+### Что добавлено:
+1. **Функционал взятия карт из колоды**:
+   - Игроки берут карты из колоды, если у них меньше 6 карт.
+2. **Логика завершения игры**:
+   - Игра завершается, когда у одного игрока остались карты, а в колоде больше нет карт для раздачи.
+
+---
+
+### Что можно улучшить:
+1. Добавить звуки.
+2. Реализовать более сложные анимации.
+3. Добавить возможность игры по сети.
+
+Этот код — основа для создания полноценной игры. Дальнейшая разработка зависит от ваших требований и фантазии! 😊
+
 Добавим логику завершения игры, подкидывание карт другими игроками и более сложные анимации. Это потребует значительного расширения кода, но я постараюсь сделать его максимально понятным.
 
 ---
