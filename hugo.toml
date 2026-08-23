@@ -12,11 +12,8 @@ pagerSize = 3 # this is set low for demonstrating with dummy content. Set to a h
 	url = '/about/'
 	weight = 1
 
-
-[services.disqus]
-  disqusShortname = false
 [params]
-  commentoEnable = false
+  commentoEnable =false
 	text_color = ""
 	author = ""
 	read_more_copy = "Далее"
