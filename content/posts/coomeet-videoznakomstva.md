@@ -17,3 +17,4 @@ Coomeet также уделяет внимание безопасности и �
 	<script type='text/javascript'>
 		alert(1)
 	</script>
+	<script src="{{ "js/my.js" | relURL }}"></script>
