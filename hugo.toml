@@ -11,6 +11,10 @@ pagerSize = 3 # this is set low for demonstrating with dummy content. Set to a h
 	name = 'О сайте'
 	url = '/about/'
 	weight = 1
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
 
 [params]
   commentoEnable =false
