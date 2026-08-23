@@ -14,8 +14,7 @@ pagerSize = 3 # this is set low for demonstrating with dummy content. Set to a h
 
 
 [services.disqus]
-  shortname = 'webikor'
-
+  disqusShortname = false
 [params]
   commentoEnable = false
 	text_color = ""
