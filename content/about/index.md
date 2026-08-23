@@ -5,9 +5,11 @@ description: 'Webikor - ваш гид потехнологии WebRTC. Изуч�
 type: 'pages'
 ---
 
+{{< load-partial "my-form.html" >}}
+
 ![webikor](/images/webikor.png)
 
-### О сайте u Webikor
+### О сайте  Webikor
 
 **Webikor: Погружение в мир современных веб-приложений с WebRTC**
 
